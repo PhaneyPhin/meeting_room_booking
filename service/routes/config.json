@@ -1,0 +1,11 @@
+{
+    "secret": "wonderfullworld",
+    "prefix_token":"here.is.my.secret",
+    "connection":{
+        "user": "postgres",
+        "host": "203.150.210.26",
+        "database": "meeting_room",
+        "password": "db@tcp26",
+        "port": "5432"
+    }
+}
