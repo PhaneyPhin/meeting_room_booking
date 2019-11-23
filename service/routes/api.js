@@ -264,7 +264,7 @@ router.post("/get_current_reservation_task", (req, res) => {
   var current = JSON.parse(JSON.stringify(empty));
   var first=JSON.parse(JSON.stringify(empty));
   var second=JSON.parse(JSON.stringify(empty));
-  pgcon.getOfDB(`select   u.first_name,u.last_name,b.start_date,b.end_date,b.booking_description from booking_master b left join user_master u on b.username=u.username inner join room_master r on r.room_id=b.room_id where status_id='1' and r.room_name=$1 and b.end_date>=$2 and b.end_date<=$3 order by b.start_date`,
+  pgcon.getOfDB(`select   u.first_name,u.last_name,b.start_date,b.end_date,b.booking_description from booking_master b left join user_master u on b.username=u.username inner join room_master r on r.room_id=b.room_id where status_id='2' and r.room_name=$1 and b.end_date>=$2 and b.end_date<=$3 order by b.start_date`,
     [room_number, moment().format("YYYY-MM-DD HH:mm:ss"), moment().format("YYYY-MM-DD") + " 23:59:59"],
     currents => {
       
@@ -327,14 +327,14 @@ router.post("/get_current_task", (req, res) => {
   if (room_number == undefined) {
     res.send({ code: -1, message: "Please check parameter", current: empty, next: next_empty });
   } else {
-    pgcon.getOfDB(`select   u.first_name,u.last_name,b.start_date,b.end_date,b.booking_description from booking_master b left join user_master u on b.username=u.username inner join room_master r on r.room_id=b.room_id where status_id='1' and r.room_name=$1 and b.start_date<CURRENT_TIMESTAMP and b.end_date>CURRENT_TIMESTAMP`, [room_number],
+    pgcon.getOfDB(`select   u.first_name,u.last_name,b.start_date,b.end_date,b.booking_description from booking_master b left join user_master u on b.username=u.username inner join room_master r on r.room_id=b.room_id where status_id='2' and r.room_name=$1 and b.start_date<CURRENT_TIMESTAMP and b.end_date>CURRENT_TIMESTAMP`, [room_number],
       currents => {
         if (currents.length > 0) {
           var current = {};
           current.name = currents[0].first_name + " " + currents[0].last_name + " - " + currents[0].booking_description;
           current.time = moment(currents[0].start_date).format("HH:mm") + " - " + moment(currents[0].end_date).format("HH:mm");
 
-          pgcon.getOfDB(`select   u.first_name,u.last_name,b.start_date,b.end_date,b.booking_description from booking_master b left join user_master u on b.username=u.username inner join room_master r on r.room_id=b.room_id where status_id='1' and r.room_name=$1 and b.start_date>=$2 and b.end_date<=$3 order by b.start_date`,
+          pgcon.getOfDB(`select   u.first_name,u.last_name,b.start_date,b.end_date,b.booking_description from booking_master b left join user_master u on b.username=u.username inner join room_master r on r.room_id=b.room_id where status_id='2' and r.room_name=$1 and b.start_date>=$2 and b.end_date<=$3 order by b.start_date`,
             [room_number, moment(currents[0].end_date).format("YYYY-MM-DD HH:mm:ss"), moment().format("YYYY-MM-DD") + " 23:59:59"],
             nexts => {
               if (nexts.length > 0) {
@@ -351,7 +351,7 @@ router.post("/get_current_task", (req, res) => {
 
           // res.send({code:1,message:"ok",current});
         } else {
-          pgcon.getOfDB(`select   u.first_name,u.last_name,b.start_date,b.end_date,b.booking_description from booking_master b left join user_master u on b.username=u.username inner join room_master r on r.room_id=b.room_id where status_id='1' and r.room_name=$1 and b.start_date>=$2 and b.end_date<=$3 order by b.start_date`,
+          pgcon.getOfDB(`select   u.first_name,u.last_name,b.start_date,b.end_date,b.booking_description from booking_master b left join user_master u on b.username=u.username inner join room_master r on r.room_id=b.room_id where status_id='2' and r.room_name=$1 and b.start_date>=$2 and b.end_date<=$3 order by b.start_date`,
             [room_number, moment().format("YYYY-MM-DD HH:mm:ss"), moment().format("YYYY-MM-DD") + " 23:59:59"],
             nexts => {
               if (nexts.length > 0) {
