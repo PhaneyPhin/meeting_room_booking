@@ -1,0 +1,97 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <style>
+        tr td:nth-child(2) {
+            color: blue;
+        }
+    </style>
+    <title>Document</title>
+</head>
+
+<body style="padding:30px;">
+
+    <br><br><br>
+    Dear <%=data.username%>
+    <br><br>
+    <%=data.message_en%><br><br>
+    <b>Booking Detail</b><br><br>
+    <table>
+        <tr>
+            <td>Booking ID :</td>
+            <td><%=data.booking_id%></td>
+        </tr>
+        <tr>
+            <td>Building :</td>
+            <td><%=data.building%></td>
+        </tr>
+        <tr>
+            <td>Floor :</td>
+            <td><%=data.floor%></td>
+        </tr>
+        <tr>
+            <td>Room :</td>
+            <td><%=data.room_name%></td>
+        </tr>
+        <tr>
+            <td>address :</td>
+            <td><%=data.address_en%></td>
+        </tr>
+        <tr>
+            <td>Subject :</td>
+            <td><%=data.subject%></td>
+        </tr>
+        <tr>
+            <td>Date :</td>
+            <td><%=data.date%></td>
+        </tr>
+        <tr>
+            <td>Time :</td>
+            <td><%=data.time%></td>
+        </tr>
+    </table>
+    <br><br><br>
+    เรียนคุณ <%=data.username%>
+    <br><br>
+    <%=data.message_en%><br><br>
+    <b>รายละเอียดการจอง</b><br><br>
+    <table>
+        <tr>
+            <td>รหัสการจอง :</td>
+            <td><%=data.booking_id%></td>
+        </tr>
+        <tr>
+            <td>อาคาร :</td>
+            <td><%=data.building%></td>
+        </tr>
+        <tr>
+            <td>ชั่น :</td>
+            <td><%=data.floor%></td>
+        </tr>
+        <tr>
+            <td>ห้อง :</td>
+            <td><%=data.room_name%></td>
+        </tr>
+        <tr>
+            <td>สถานที่ :</td>
+            <td><%=data.address_en%></td>
+        </tr>
+        <tr>
+            <td>หัวข้อการจอง :</td>
+            <td><%=data.subject%></td>
+        </tr>
+        <tr>
+            <td>วันที่ :</td>
+            <td><%=data.date%></td>
+        </tr>
+        <tr>
+            <td>เวลา :</td>
+            <td><%=data.time%></td>
+        </tr>
+    </table>
+</body>
+
+</html>

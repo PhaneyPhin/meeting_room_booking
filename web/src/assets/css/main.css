@@ -29,7 +29,7 @@
  * @import "components/buttons";
  * @import "components/forms";
  */
- @tailwind components;
+@tailwind components;
 
 /**
  * This injects all of Tailwind's utility classes, generated based on your
@@ -41,17 +41,26 @@
  *
  * See: https://github.com/tailwindcss/tailwindcss/issues/53#issuecomment-341413622
  */
- @tailwind utilities;
+/* @import "./style.css"; */
+@tailwind utilities;
 
- @font-face {
-   font-family: kanit;
-   src: url('../fonts/kanit/Kanit-Regular.otf') format("opentype");
- }
- * {
-   font-family: "kanit";
- }
-.pointer{
+@font-face {
+  font-family: kanit;
+  src: url("../fonts/kanit/Kanit-Regular.otf") format("opentype");
+}
+* {
+  font-family: "kanit";
+}
+.pointer {
   cursor: pointer;
+}
+input.danger {
+  border-color: red;
+}
+input.danger::placeholder {
+  /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: red;
+  opacity: 1; /* Firefox */
 }
 /**
  * Here you would add any custom utilities you need that don't come out of the
@@ -67,22 +76,22 @@
  * @import "utilities/background-patterns";
  * @import "utilities/skew-transforms";
  */
-.require{
-  color:red;
+.require {
+  color: red;
 }
-.errors{
-  color:red;
-  font-size: 60%;
+.errors {
+  color: red;
+  font-size: 80%;
 }
 .vdp-datepicker input {
-  padding: .7rem;
+  padding: 0.7rem;
   font-size: 1rem;
   border-radius: 5px;
   border: 1px solid rgba(0, 0, 0, 0.2);
   color: #626262;
-  width: 100%!important;
+  width: 100% !important;
 }
-.right{
-  float:right;
-  margin-right:10px;
+.right {
+  float: right;
+  margin-right: 10px;
 }

@@ -1,0 +1,15 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const tslib_1 = require("tslib");
+const express_1 = require("express");
+const Room_controller_1 = tslib_1.__importDefault(require("../controllers/Room.controller"));
+const router = express_1.Router();
+const room = new Room_controller_1.default();
+router.post("/get_room", room.getRoom);
+router.post("/add_room", room.addRoom);
+router.post("/update_room", room.UpdateRoom);
+router.post("/delete_room", room.deleteRoom);
+router.post("/get_fee_room", room.getFreeRoom);
+router.post("/get_room_with_status", room.getFreeRoomWithStatus);
+router.post("/getRoomByBuilding", room.getRoomByBuilding);
+exports.default = router;

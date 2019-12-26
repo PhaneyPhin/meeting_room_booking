@@ -1,0 +1,14 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const tslib_1 = require("tslib");
+const express_1 = require("express");
+const CheckLogin_1 = tslib_1.__importDefault(require("../middleware/CheckLogin"));
+const Department_controller_1 = tslib_1.__importDefault(require("../controllers/Department.controller"));
+var { CheckAdmin } = new CheckLogin_1.default();
+const router = express_1.Router();
+const department = new Department_controller_1.default();
+router.post("/getDepartment", department.getDepartment);
+router.post("/createDepartment", CheckAdmin, department.addDepartment);
+router.post("/updateDepartment", CheckAdmin, department.updateDepartment);
+router.post("/deleteDepartment", CheckAdmin, department.deleteDepartment);
+exports.default = router;

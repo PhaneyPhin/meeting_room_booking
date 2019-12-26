@@ -1,0 +1,14 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const tslib_1 = require("tslib");
+const express_1 = require("express");
+const CheckLogin_1 = tslib_1.__importDefault(require("../middleware/CheckLogin"));
+const SubDepartment_controller_1 = tslib_1.__importDefault(require("../controllers/SubDepartment.controller"));
+var { CheckAdmin } = new CheckLogin_1.default();
+const router = express_1.Router();
+const subDepartment = new SubDepartment_controller_1.default();
+router.post("/getSubDepartment", subDepartment.getSubDepartment);
+router.post("/createSubDepartment", CheckAdmin, subDepartment.addSubDepartment);
+router.post("/updateSubDepartment", CheckAdmin, subDepartment.updateSubDepartment);
+router.post("/deleteSubDepartment", CheckAdmin, subDepartment.deleteSubDepartment);
+exports.default = router;

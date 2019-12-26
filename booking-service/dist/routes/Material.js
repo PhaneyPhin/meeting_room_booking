@@ -1,0 +1,14 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const tslib_1 = require("tslib");
+const express_1 = require("express");
+const Material_controller_1 = tslib_1.__importDefault(require("../controllers/Material.controller"));
+const CheckLogin_1 = tslib_1.__importDefault(require("../middleware/CheckLogin"));
+var { CheckAdmin } = new CheckLogin_1.default();
+const router = express_1.Router();
+const material = new Material_controller_1.default();
+router.post("/get", material.getMaterial);
+router.post("/create", CheckAdmin, material.addMaterial);
+router.post("/update", CheckAdmin, material.updateMaterial);
+router.post("/delete", CheckAdmin, material.deleteMaterial);
+exports.default = router;

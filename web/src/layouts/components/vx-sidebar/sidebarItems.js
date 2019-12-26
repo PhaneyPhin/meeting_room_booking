@@ -28,13 +28,26 @@ export default [
     i18n: "Home",
   },
   {
-        url: '/user_data',
-        name: "eCommerce",
-        icon: "UserIcon",
-        slug: "dashboardECommerce",
-        i18n: "User Data",
+    url: '/cost',
+    name: "Analytics",
+    icon: "HomeIcon",
+    slug: "dashboardAnalytics",
+    i18n: "Cost",
   },
-
+  {
+    url: '/user_data',
+    name: "eCommerce",
+    icon: "UserIcon",
+    slug: "dashboardECommerce",
+    i18n: "User Data",
+  },
+  {
+    url: '/building',
+    name: "material",
+    icon: "BoxIcon",
+    slug: "dashboardECommerce",
+    i18n: "Building Data",
+  },
   {
     url: '/room_data',
     name: "eCommerce",
@@ -42,44 +55,71 @@ export default [
     slug: "dashboardECommerce",
     i18n: "Room Data",
   },
-
+  {
+    url: '/material',
+    name: "material",
+    icon: "BoxIcon",
+    slug: "dashboardECommerce",
+    i18n: "Material Data",
+  },
+  {
+    url: '/officer',
+    name: "eCommerce",
+    icon: "LayoutIcon",
+    slug: "dashboardECommerce",
+    i18n: "Officer Data",
+  },
+  {
+    url: '/department',
+    name: "eCommerce",
+    icon: "LayoutIcon",
+    slug: "dashboardECommerce",
+    i18n: "Department Data",
+  },
+  {
+    url: '/schedule',
+    name: "eCommerce",
+    icon: "LayoutIcon",
+    slug: "dashboardECommerce",
+    i18n: "Schedule Table",
+  },
   {
     header: "Booking Data",
     i18n: "Booking Data",
-    cansee:"approver"
+    cansee: "approver"
   },
   {
     url: '/all_booking',
     name: "eCommerce",
-    icon: "LayoutIcon",
+    icon: "CheckSquareIcon",
     slug: "dashboardECommerce",
     i18n: "All Booked Data",
   },
   {
     url: '/user_booking',
     name: "eCommerce",
-    icon: "LayoutIcon",
+    icon: "BellIcon",
     slug: "dashboardECommerce",
     i18n: "User Booking",
   },
   {
     url: '/booking_rejected',
     name: "eCommerce",
-    icon: "LayoutIcon",
+    icon: "AlertOctagonIcon",
     slug: "dashboardECommerce",
     i18n: "All Rejected Data",
   },
   {
     url: '/booking_history',
     name: "eCommerce",
-    icon: "LayoutIcon",
+    icon: "ApertureIcon",
     slug: "dashboardECommerce",
     i18n: "Booking History",
   },
   {
     header: "My Booking Data",
     i18n: "My Booking Data",
-    cansee:"member"
+    cansee: "member"
   },
   {
     url: '/book_room',
@@ -91,29 +131,29 @@ export default [
   {
     url: '/all_my_booking',
     name: "eCommerce",
-    icon: "LayoutIcon",
+    icon: "CheckSquareIcon",
     slug: "dashboardECommerce",
     i18n: "All Booked Data",
   },
   {
     url: '/my_booking',
     name: "eCommerce",
-    icon: "LayoutIcon",
+    icon: "BellIcon",
     slug: "dashboardECommerce",
     i18n: "My Booking",
   },
   {
     url: '/my_booking_rejected',
     name: "eCommerce",
-    icon: "LayoutIcon",
+    icon: "AlertOctagonIcon",
     slug: "dashboardECommerce",
     i18n: "My Rejected Booking",
   },
   {
     url: '/my_booking_history',
     name: "eCommerce",
-    icon: "LayoutIcon",
+    icon: "ApertureIcon",
     slug: "dashboardECommerce",
     i18n: "My Booking History",
-  },
+  }
 ]

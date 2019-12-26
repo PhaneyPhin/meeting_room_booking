@@ -29,26 +29,26 @@
 
       <!-- CARD 3: ORDER RECIEVED -->
       <div class="vx-col w-full sm:w-1/2 md:w-1/2 mb-base pointer" @click="goto('/room_data')">
-        <statistics-card-line icon="HomeIcon" :statistic="data.room_count" :statisticTitle="$t('rooms')" :chartData="analyticsData.ordersRecevied" color='warning' type='area'></statistics-card-line>
+        <statistics-card-line icon="LayoutIcon" :statistic="data.room_count" :statisticTitle="$t('rooms')" :chartData="analyticsData.ordersRecevied" color='warning' type='area'></statistics-card-line>
       </div>
       <div class="vx-col w-full sm:w-1/4 md:w-1/4 mb-base pointer" @click="goto('/user_booking')">
-        <statistics-card-line icon="HomeIcon" :statistic="data.wait_for_approve" :statisticTitle="$t('wait_for_approve')" :chartData="analyticsData.ordersRecevied" color='warning' type='area'></statistics-card-line>
+        <statistics-card-line icon="BellIcon" :statistic="data.wait_for_approve" :statisticTitle="$t('wait_for_approve')" :chartData="analyticsData.ordersRecevied" color='warning' type='area'></statistics-card-line>
       </div>
        <div class="vx-col w-full sm:w-1/4 md:w-1/4  mb-base pointer" @click="goto('/booking_history')">
-        <statistics-card-line icon="UsersIcon" :statistic="data.all_booked" :statisticTitle="$t('All of Booked Data')" :chartData="analyticsData.subscribersGained" type='area' ></statistics-card-line>
+        <statistics-card-line icon="ApertureIcon" :statistic="data.all_booked" :statisticTitle="$t('All of Booked Data')" :chartData="analyticsData.subscribersGained" type='area' ></statistics-card-line>
       </div>
       <div class="vx-col w-full sm:w-1/2 md:w-1/2  mb-base pointer" @click="goto('/all_booking')">
-        <statistics-card-line icon="UsersIcon" :statistic="data.approved" :statisticTitle="$t('approved_data')" :chartData="analyticsData.subscribersGained" type='area' ></statistics-card-line>
+        <statistics-card-line icon="CheckSquareIcon" :statistic="data.approved" :statisticTitle="$t('approved_data')" :chartData="analyticsData.subscribersGained" type='area' ></statistics-card-line>
       </div>
        <div class="vx-col w-full sm:w-1/2 md:w-1/2 mb-base pointer" @click="goto('/my_booking')">
-        <statistics-card-line icon="HomeIcon" :statistic="data.your_wait_for_approve" :statisticTitle="$t('your_wait_for_approve')" :chartData="analyticsData.ordersRecevied"  type='area'></statistics-card-line>
+        <statistics-card-line icon="BellIcon" :statistic="data.your_wait_for_approve" :statisticTitle="$t('your_wait_for_approve')" :chartData="analyticsData.ordersRecevied"  type='area'></statistics-card-line>
       </div>
        <div class="vx-col w-full sm:w-1/2 md:w-1/2  mb-base pointer" @click="goto('/all_my_booking')">
-        <statistics-card-line icon="UsersIcon" :statistic="data.your_approved" :statisticTitle="$t('your_approved_data')" :chartData="analyticsData.subscribersGained" color="warning" type='area' ></statistics-card-line>
+        <statistics-card-line icon="CheckSquareIcon" :statistic="data.your_approved" :statisticTitle="$t('your_approved_data')" :chartData="analyticsData.subscribersGained" color="warning" type='area' ></statistics-card-line>
       </div>
 
       <div class="vx-col w-full sm:w-1/2 md:w-1/2  mb-base pointer" @click="goto('/my_booking_history')">
-        <statistics-card-line icon="UsersIcon" :statistic="data.your_all_data" :statisticTitle="$t('All of Your Booking')" :chartData="analyticsData.subscribersGained" color="warning" type='area' ></statistics-card-line>
+        <statistics-card-line icon="ApertureIcon" :statistic="data.your_all_data" :statisticTitle="$t('All of Your Booking')" :chartData="analyticsData.subscribersGained" color="warning" type='area' ></statistics-card-line>
       </div>
     </div>
 

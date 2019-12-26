@@ -1,0 +1,13 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const tslib_1 = require("tslib");
+const express_1 = require("express");
+const Building_controller_1 = tslib_1.__importDefault(require("../controllers/Building.controller"));
+const router = express_1.Router();
+const building = new Building_controller_1.default();
+router.post('/getBuilding', building.getBuilding);
+router.post('/addBuilding', building.addBuilding);
+router.post("/updateBuilding", building.updateBuilding);
+router.post("/deleteBuilding", building.deleteBuilding);
+router.post("/getLocation", building.getLocation);
+exports.default = router;

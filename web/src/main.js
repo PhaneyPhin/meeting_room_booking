@@ -45,11 +45,29 @@ import '@/firebase/firebaseConfig'
 import AuthPlugin from "./plugins/auth";
 Vue.use(AuthPlugin);
 import moment from 'moment';
-Vue.filter('formatDate', function(value) {
+Vue.filter('formatDate', function (value) {
 
   if (value) {
 
     return moment(String(value)).format('MM/DD/YYYY HH:mm:ss')
+
+  }
+
+});
+Vue.filter('OnlyDate', function (value) {
+
+  if (value) {
+
+    return moment(String(value)).format('MM/DD/YYYY')
+
+  }
+
+});
+Vue.filter('OnlyTime', function (value) {
+
+  if (value) {
+
+    return moment(String(value)).format('HH:mm:ss')
 
   }
 
@@ -77,7 +95,8 @@ import router from './router'
 // Vuex Store
 import store from './store/store'
 
-
+// import '@/assets/css/style.css';
+// import '@/assets/css/style.scss';
 // i18n
 import i18n from './i18n/i18n'
 
@@ -105,11 +124,11 @@ Vue.use(VeeValidate);
 // Google Maps
 import * as VueGoogleMaps from 'vue2-google-maps'
 Vue.use(VueGoogleMaps, {
-    load: {
-        // Add your API key here
-        key: 'API_KEY',
-        libraries: 'places', // This is required if you use the Auto complete plug-in
-    },
+  load: {
+    // Add your API key here
+    key: 'API_KEY',
+    libraries: 'places', // This is required if you use the Auto complete plug-in
+  },
 })
 
 // Vuejs - Vue wrapper for hammerjs
@@ -134,9 +153,9 @@ require('./assets/css/iconfont.css')
 Vue.config.productionTip = false
 
 new Vue({
-    router,
-    store,
-    i18n,
-    acl,
-    render: h => h(App)
+  router,
+  store,
+  i18n,
+  acl,
+  render: h => h(App)
 }).$mount('#app')

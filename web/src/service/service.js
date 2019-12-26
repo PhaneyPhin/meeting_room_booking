@@ -3,11 +3,12 @@ import axios from 'axios'
 // import { read } from 'fs';
 // import Axios from 'axios';
 import Vue from 'vue';
-import moment from "moment";
+// import moment from "moment";
+// var url;
 export default {
-  prefix_token:"here.is.my.secret",
+  prefix_token: "DTC@software.com.eyhkdjfhdkjf.xyz",
   // url:"http://localhost:3000/api/",
-  url:"http://203.150.210.26:3008/api/",
+  url: window.url,
   getData(url) {
     return new Promise((resolve, reject) => {
       axios.create({
@@ -20,18 +21,26 @@ export default {
         }
       }).get(url).then(result => {
 
-        result=result.data;
-        if(result.code==true){
+        result = result.data;
+        if (result.code == true) {
           resolve(result);
-        }else{
-          Vue.swal(result.message,'','error').then((result)=>{
-            reject(result);
-          });
+        } else {
+          reject(result);
         }
       }, err => {
         reject(err);
       });
     })
+  },
+  setProfilePicture(img) {
+    localStorage.setItem('img', img);
+  },
+  getProfiePicture() {
+    if (localStorage.get('img') != undefined) {
+      return localStorage.get('img');
+    } else {
+      return "";
+    }
   },
   postData(url, data) {
     return new Promise((resolve, reject) => {
@@ -44,13 +53,11 @@ export default {
           'x-access-token': this.getToken()
         }
       }).post(url, JSON.stringify(data)).then(result => {
-        result=result.data;
-        if(result.code==true){
+        result = result.data;
+        if (result.code == true) {
           resolve(result);
-        }else{
-          Vue.swal(result.message,'','error').then((result)=>{
-            reject(result);
-          });
+        } else {
+          reject(result);
         }
       }, err => {
         reject(err);
@@ -71,7 +78,7 @@ export default {
     }
 
   },
-  removeToken(){
+  removeToken() {
     sessionStorage.removeItem(this.tokenText);
   },
   getUser() {
@@ -93,10 +100,10 @@ export default {
 
 
   decodeToken(token) {
-    if(token.length<this.prefix_token.length){
+    if (token.length < this.prefix_token.length) {
       return "";
-    }else{
-      token=token.substr(this.prefix_token.length);
+    } else {
+      token = token.substr(this.prefix_token.length);
     }
     try {
       var base64Url = token.split('.')[1];
