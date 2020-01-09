@@ -2,9 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 require("./LoadEnv");
-const server_1 = tslib_1.__importDefault(require("./server"));
+const Server_1 = tslib_1.__importDefault(require("./Server"));
 const shared_1 = require("./shared");
 const port = Number(process.env.PORT || 3000);
-server_1.default.listen(port, () => {
+Server_1.default.listen(port, () => {
     shared_1.logger.info('Express server started on port: ' + port);
 });

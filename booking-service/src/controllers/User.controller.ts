@@ -5,17 +5,21 @@ import moment from 'moment';
 export default class User extends Connection {
     public getUser = async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const users: any = await this.getOfDB(`select * from user_master u inner join role_master r on u.role=r.role_id where flag='1'`, []);
+            const users: any = await this.getOfDB(`select u.*,r.*,d.department_id as officer,sd.sub_department_id as department from user_master u 
+                inner join role_master r on u.role=r.role_id
+                left join sub_department_master sd on sd.sub_department_id=u.sub_department_id
+                left join department_master d on d.department_id=sd.department_id
+                where u.flag='1'`, []);
             res.json({ code: 1, message: 'ok', data: users });
         } catch (e) {
             res.send(e);
         }
     }
     public addUser = async (req: Request, res: Response, next: NextFunction) => {
-        var { username, password, first_name, last_name, email, role, img_profile } = req.body;
+        var { username, password, first_name, last_name, email, role, img_profile, department } = req.body;
         try {
-            await this.execute(`insert into user_master values ($1,SHA1($2),$3,$4,$5,$6,$7,$8,$9,$10)`,
-                [username, password, first_name, last_name, email, moment().format("YYYY-MM-DD HH:mm:ss"), null, role, '1', img_profile]);
+            await this.execute(`insert into user_master values ($1,SHA1($2),$3,$4,$5,$6,$7,$8,$9,$10,$11)`,
+                [username, password, first_name, last_name, email, moment().format("YYYY-MM-DD HH:mm:ss"), null, role, '1', img_profile, department]);
             return res.json({ code: 1, message: "ok" });
         } catch (e) {
             return res.json(e);
@@ -23,9 +27,9 @@ export default class User extends Connection {
 
     }
     public updateUser = async (req: Request, res: Response, next: NextFunction) => {
-        var { username, first_name, last_name, email, role, img_profile } = req.body;
+        var { username, first_name, last_name, email, role, img_profile, department } = req.body;
         try {
-            await this.execute(`update user_master set first_name=$1,last_name=$2,email=$3,role=$4,img_profile=$6 where username=$5`, [first_name, last_name, email, role, username, img_profile]);
+            await this.execute(`update user_master set first_name=$1,last_name=$2,email=$3,role=$4,img_profile=$6,sub_department_id=$7 where username=$5`, [first_name, last_name, email, role, username, img_profile, department]);
             return res.json({ code: 1, message: 'ok' });
         } catch (e) {
             return res.json(e);

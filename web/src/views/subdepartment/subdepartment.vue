@@ -54,7 +54,7 @@
           <div class="mt-3">
             <div class="container">
               <div class="vx-row">
-                <div class="vx-col md:w-1/2 mt-5">
+                <div class="vx-col md:w-1/2 w-full mt-5">
                   <label for>{{$t("Department's Thai Name")}}</label>
                   <vs-input
                     v-model="editObj.sub_department_name_th"
@@ -66,7 +66,7 @@
                     v-if="invalid.sub_department_name_th"
                   >{{$t("Please input Department's Thai Name")}}</div>
                 </div>
-                <div class="vx-col md:w-1/2 mt-5">
+                <div class="vx-col md:w-1/2 w-full mt-5">
                   <label for>{{$t("Department's English Name")}}</label>
                   <vs-input
                     v-model="editObj.sub_department_name_en"
@@ -78,26 +78,21 @@
                     v-if="invalid.sub_department_name_en"
                   >{{$t("Please input Department's English Name")}}</div>
                 </div>
-                <div class="vx-col md:w-full">
-                  <div class="vx-col md:w-1/2 mt-5">
-                    <label for>{{ $t("Officer") }}</label>
-                    <vs-select
-                      class="w-full"
-                      v-model="editObj.department_id"
-                      :danger="invalid.department_id"
-                    >
-                      <vs-select-item
-                        :key="index"
-                        :value="item.department_id"
-                        :text="item['department_name_'+$i18n.locale]"
-                        v-for="(item, index) in departments"
-                      />
-                    </vs-select>
-                    <div
-                      class="errors"
-                      v-if="invalid.department_id"
-                    >{{ $t("Please select officer") }}</div>
-                  </div>
+                <div class="vx-col md:w-1/2 w-full mt-5">
+                  <label for>{{ $t("Officer") }}</label>
+                  <vs-select
+                    class="w-full"
+                    v-model="editObj.department_id"
+                    :danger="invalid.department_id"
+                  >
+                    <vs-select-item
+                      :key="index"
+                      :value="item.department_id"
+                      :text="item['department_name_'+$i18n.locale]"
+                      v-for="(item, index) in departments"
+                    />
+                  </vs-select>
+                  <div class="errors" v-if="invalid.department_id">{{ $t("Please select officer") }}</div>
                 </div>
               </div>
             </div>

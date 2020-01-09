@@ -45,44 +45,46 @@
           </div>
         </vs-tab>
         <vs-tab :label="$t('Add Material')">
-          <div class="vx-row">
-            <div class="vx-col md:w-1/3 mt-5">
-              <label>
-                {{$t('material_name')}}
-                <span class="require">*</span>
-              </label>
-              <vs-input
-                v-model="editObj.material_name"
-                class="w-full"
-                :danger="invalid.material_name"
-              />
-              <div class="errors" v-if="invalid.material_name">{{$t("alert_material_name")}}</div>
-            </div>
-            <div class="vx-col md:w-1/3 mt-5">
-              <label>
-                {{$t('material_price')}}
-                <span class="require">*</span>
-              </label>
-              <vs-input
-                v-model="editObj.material_price"
-                class="w-full"
-                :danger="invalid.material_price"
-              />
-              <div class="errors" v-if="invalid.material_price">{{$t("alert_material_price")}}</div>
-            </div>
-          </div>
-          <div>
+          <div class="container">
             <div class="vx-row">
-              <div class="vx-col w-full mt-5">
-                <vs-button
-                  ref="loadableButton"
-                  id="button-with-loading"
-                  class="vs-con-loading__container"
-                  style="margin-right:10px"
-                  vslor="primary"
-                  @click="save"
-                >{{$t('save')}}</vs-button>
-                <vs-button color="danger" type="border" @click="forceRerender()">{{$t('cancel')}}</vs-button>
+              <div class="vx-col md:w-1/2 w-full mt-5">
+                <label>
+                  {{$t('material_name')}}
+                  <span class="require">*</span>
+                </label>
+                <vs-input
+                  v-model="editObj.material_name"
+                  class="w-full"
+                  :danger="invalid.material_name"
+                />
+                <div class="errors" v-if="invalid.material_name">{{$t("alert_material_name")}}</div>
+              </div>
+              <div class="vx-col md:w-1/2 w-full mt-5">
+                <label>
+                  {{$t('material_price')}}
+                  <span class="require">*</span>
+                </label>
+                <vs-input
+                  v-model="editObj.material_price"
+                  class="w-full"
+                  :danger="invalid.material_price"
+                />
+                <div class="errors" v-if="invalid.material_price">{{$t("alert_material_price")}}</div>
+              </div>
+            </div>
+            <div>
+              <div class="vx-row">
+                <div class="vx-col w-full mt-5">
+                  <vs-button
+                    ref="loadableButton"
+                    id="button-with-loading"
+                    class="vs-con-loading__container"
+                    style="margin-right:10px"
+                    vslor="primary"
+                    @click="save"
+                  >{{$t('save')}}</vs-button>
+                  <vs-button color="danger" type="border" @click="forceRerender()">{{$t('cancel')}}</vs-button>
+                </div>
               </div>
             </div>
           </div>

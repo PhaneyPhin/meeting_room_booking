@@ -5,45 +5,49 @@
       <h6>{{$t("search_booking_history")}}</h6>
 
       <div class="mt-6 vx-row mb-6">
-        <div
-          class="vx-col lg:w-1/6 md:w-1/3 sm:w-1/3 w-1/3 mt-5"
-          style="text-align:right;padding-top:3px"
-        >
-          <label>{{$t("start_datetime")}}</label>
+        <div class="vx-col lg:w-5/12 md:w-1/2 w-full">
+          <div class="vx-row">
+            <div class="vx-col lg:w-1/3 w-full mt-5" style="padding-top:3px">
+              <label>{{$t("start_datetime")}}</label>
+            </div>
+            <div class="vx-col lg:w-2/3 w-full lg:mt-5 mt-0 sm:pr-10 lg:pr-0 md:pr-20">
+              <flat-pickr
+                :config="configdateTimePicker"
+                class="w-full flatpickr-input"
+                v-model="editObj.start_date"
+                :class="{' danger':invalid.start_date}"
+                placeholder
+              />
+            </div>
+          </div>
         </div>
-        <div class="vx-col lg:w-1/5 md:w-2/3 mt-5 sm:w-2/3 w-2/3 sm:pr-10 lg:pr-0 md:pr-20">
-          <flat-pickr
-            :config="configdateTimePicker"
-            class="w-full flatpickr-input"
-            v-model="editObj.start_date"
-            :class="{' danger':invalid.start_date}"
-            placeholder
-          />
-        </div>
-        <div
-          class="vx-col lg:w-1/6 md:w-1/3 sm:w-1/3 w-1/3 mt-5"
-          style="text-align:right;padding-top:3px"
-        >
-          <label>{{$t("end_datetime")}}</label>
-        </div>
-        <div class="vx-col lg:w-1/5 md:w-2/3 sm:w-2/3 w-2/3 mt-5 sm:pr-10 lg:pr-0 md:pr-20">
-          <flat-pickr
-            :config="configdateTimePicker"
-            class="w-full flatpickr-input"
-            v-model="editObj.end_date"
-            :class="{'w-full flatpickr-input danger':invalid.end_date}"
-            placeholder
-          />
+        <div class="vx-col lg:w-5/12 md:w-1/2 w-full">
+          <div class="vx-row">
+            <div class="vx-col lg:w-1/3 w-full mt-5" style="padding-top:3px">
+              <label>{{$t("end_datetime")}}</label>
+            </div>
+            <div class="vx-col lg:w-2/3 w-full lg:mt-5 mt-0 sm:pr-10 lg:pr-0 md:pr-20">
+              <flat-pickr
+                :config="configdateTimePicker"
+                class="w-full flatpickr-input"
+                v-model="editObj.end_date"
+                :class="{'w-full flatpickr-input danger':invalid.end_date}"
+                placeholder
+              />
+            </div>
+          </div>
         </div>
 
-        <div class="vx-col lg:w-1/6 md:w-1/3 sm:w-1/3 w-full mt-5 lg:pr-10 lg:pl-5">
-          <vs-button
-            ref="loadableButton"
-            id="button-with-loading"
-            class="vs-con-loading__container md:mr-0 sm:mr-0 mr-0 lg:float-right md:float-right sm:float-right float-left"
-            vslor="primary"
-            @click="search()"
-          >{{$t('search')}}</vs-button>
+        <div class="vx-col sm:pr-10 md:pr-20 lg:w-1/6 md:w-1/2 w-full mt-5">
+          <div class="vx-row pr-4 pl-4">
+            <vs-button
+              ref="loadableButton"
+              id="button-with-loading"
+              class="vs-con-loading__container vx-col w-full"
+              vslor="primary"
+              @click="search()"
+            >{{$t('search')}}</vs-button>
+          </div>
         </div>
       </div>
     </vx-card>
@@ -91,49 +95,49 @@
     </vx-card>
     <vs-popup class="holamundo" :title="$t('view')" :active.sync="popupActive">
       <div class="vx-row mt-5">
-        <div class="vx-col md:w-1/4" align="right">{{$t('Officer')}}:</div>
-        <div class="vx-col md:w-3/4 value">{{view['department_name_'+$i18n.locale]}}</div>
+        <div class="vx-col md:w-1/4 w-1/2 pl-5">{{$t('Officer')}}:</div>
+        <div class="vx-col md:w-3/4 w-1/2 pl-5 value">{{view['department_name_'+$i18n.locale]}}</div>
       </div>
       <div class="vx-row mt-5">
-        <div class="vx-col md:w-1/4" align="right">{{$t('Department')}}:</div>
-        <div class="vx-col md:w-3/4 value">{{view['sub_department_name_'+$i18n.locale]}}</div>
+        <div class="vx-col md:w-1/4 w-1/2 pl-5">{{$t('Department')}}:</div>
+        <div class="vx-col md:w-3/4 w-1/2 pl-5 value">{{view['sub_department_name_'+$i18n.locale]}}</div>
       </div>
       <div class="vx-row mt-5">
-        <div class="vx-col md:w-1/4" align="right">{{$t('booking_description')}}:</div>
-        <div class="vx-col md:w-3/4 value">{{view.booking_description}}</div>
+        <div class="vx-col md:w-1/4 w-1/2 pl-5">{{$t('booking_description')}}:</div>
+        <div class="vx-col md:w-3/4 w-1/2 pl-5 value">{{view.booking_description}}</div>
       </div>
       <div class="vx-row mt-5">
-        <div class="vx-col md:w-1/4" align="right">{{$t('booking_id')}}:</div>
-        <div class="vx-col md:w-1/4 value">{{view.booking_id}}</div>
-        <div class="vx-col md:w-1/4" align="right">{{$t('first_surname')}}:</div>
-        <div class="vx-col md:w-1/4 value">{{view.first_name+' '+view.last_name}}</div>
-      </div>
-
-      <div class="vx-row mt-5">
-        <div class="vx-col md:w-1/4" align="right">{{$t('room_name')}}:</div>
-        <div class="vx-col md:w-1/4 value">{{view.room_name}}</div>
-        <div class="vx-col md:w-1/4" align="right">{{$t('important')}}:</div>
-        <div class="vx-col md:w-1/4 value">{{view.important}}</div>
+        <div class="vx-col md:w-1/4 w-1/2 pl-5">{{$t('booking_id')}}:</div>
+        <div class="vx-col md:w-1/4 w-1/2 pl-5 value">{{view.booking_id}}</div>
+        <div class="vx-col md:w-1/4 w-1/2 pl-5">{{$t('first_surname')}}:</div>
+        <div class="vx-col md:w-1/4 w-1/2 pl-5 value">{{view.first_name+' '+view.last_name}}</div>
       </div>
 
       <div class="vx-row mt-5">
-        <div class="vx-col md:w-1/4" align="right">{{$t('Remark')}}:</div>
-        <div class="vx-col md:w-1/4 value">{{view.remark}}</div>
-        <div class="vx-col md:w-1/4" align="right">{{$t('Tel')}}:</div>
-        <div class="vx-col md:w-1/4 value">{{view.tel}}</div>
+        <div class="vx-col md:w-1/4 w-1/2 pl-5">{{$t('room_name')}}:</div>
+        <div class="vx-col md:w-1/4 w-1/2 pl-5 value">{{view.room_name}}</div>
+        <div class="vx-col md:w-1/4 w-1/2 pl-5">{{$t('importance')}}:</div>
+        <div class="vx-col md:w-1/4 w-1/2 pl-5 value">{{$t(view.important)}}</div>
+      </div>
+
+      <div class="vx-row mt-5">
+        <div class="vx-col md:w-1/4 w-1/2 pl-5">{{$t('Remark')}}:</div>
+        <div class="vx-col md:w-1/4 w-1/2 pl-5 value">{{view.remark}}</div>
+        <div class="vx-col md:w-1/4 w-1/2 pl-5">{{$t('Tel')}}:</div>
+        <div class="vx-col md:w-1/4 w-1/2 pl-5 value">{{view.tel}}</div>
       </div>
       <div class="vx-row mt-5">
-        <div class="vx-col md:w-1/4" align="right">{{$t('Member')}}:</div>
-        <div class="vx-col md:w-1/4 value">{{view.member}}</div>
-        <div class="vx-col md:w-1/4" align="right">{{$t('booking_date')}}:</div>
-        <div class="vx-col md:w-1/4 value">{{view.booking_date | onlyDate}}</div>
+        <div class="vx-col md:w-1/4 w-1/2 pl-5">{{$t('Member')}}:</div>
+        <div class="vx-col md:w-1/4 w-1/2 pl-5 value">{{view.member}}</div>
+        <div class="vx-col md:w-1/4 w-1/2 pl-5">{{$t('booking_date')}}:</div>
+        <div class="vx-col md:w-1/4 w-1/2 pl-5 value">{{view.booking_date | onlyDate}}</div>
       </div>
       <div class="vx-row mt-5">
-        <div class="vx-col md:w-1/4" align="right">{{$t('date')}}:</div>
-        <div class="vx-col md:w-1/4 value">{{view.start_date | onlyDate}}</div>
-        <div class="vx-col md:w-1/4" align="right">{{$t('time')}}:</div>
+        <div class="vx-col md:w-1/4 w-1/2 pl-5">{{$t('date')}}:</div>
+        <div class="vx-col md:w-1/4 w-1/2 pl-5 value">{{view.start_date | onlyDate}}</div>
+        <div class="vx-col md:w-1/4 w-1/2 pl-5">{{$t('time')}}:</div>
         <div
-          class="vx-col md:w-1/4 value"
+          class="vx-col md:w-1/4 w-1/2 pl-5 value"
         >{{view.start_date | onlyTime}}-{{view.end_date | onlyTime}}</div>
       </div>
       <v-template v-if="materials.length>0">

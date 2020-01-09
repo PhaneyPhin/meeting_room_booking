@@ -323,7 +323,7 @@ export default {
         floor: "",
         status: ""
       },
-      room_status: ["normal", "repair", "cancel using"]
+      room_status: ["normal using", "repair", "cancel using"]
     };
   },
 

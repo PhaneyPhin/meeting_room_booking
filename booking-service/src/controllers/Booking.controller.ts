@@ -4,7 +4,7 @@ import Email from './Email.controller';
 import DataInterface from 'src/commons/DataInterface';
 export default class Booking extends Email {
     public bookingRoom = async (req: Request, res: Response, next: NextFunction) => {
-        var { username, room_id, start_date, end_date, booking_description, material_lists, important, member, remark, tel, sub_department_id } = req.body;
+        var { username, room_id, start_date, end_date, booking_description, material_lists, important, member, remark, tel } = req.body;
         try {
             var booking_id: any = await this.getMaxID("booking_master", "booking_id", "B", 7, "");
             var status = '1';
@@ -14,8 +14,8 @@ export default class Booking extends Email {
                     status = '2';
                 }
             }
-            await this.execute(`insert into booking_master values ($1,$2,$3,$4,$5,$6,$7,$8,'1',$9,$10,$11,$12,$13)`,
-                [booking_id, booking_description, username, room_id, start_date, end_date, status, moment().format("YYYY-MM-DD HH:mm:ss"), important, member, remark, tel, sub_department_id]);
+            await this.execute(`insert into booking_master values ($1,$2,$3,$4,$5,$6,$7,$8,'1',$9,$10,$11,$12)`,
+                [booking_id, booking_description, username, room_id, start_date, end_date, status, moment().format("YYYY-MM-DD HH:mm:ss"), important, member, remark, tel]);
             material_lists.forEach(async (item: any) => {
                 var { Id, material_number } = item;
                 await this.execute(`insert into booking_material values ($1,$2,$3,'1')`, [booking_id, Id, material_number]);
@@ -41,7 +41,8 @@ export default class Booking extends Email {
         }
     }
     public getCurrentReservationTask = async (req: Request, res: Response, next: NextFunction) => {
-        const { room_number } = req.body;
+        const { room_id } = req.body;
+        console.log(req.body);
 
         const active_empty = { start_time: "__:__", end_time: "__:__", name: "Meeting Room", subject: "there is no meeting now" };
         const empty = { start_time: "", end_time: "", name: "", subject: "" };
@@ -49,13 +50,18 @@ export default class Booking extends Email {
         var first = { ...empty };
         var second = { ...empty };
         try {
-            var currents: any = await this.getOfDB(`select   u.first_name,u.last_name,b.start_date,b.end_date,b.booking_description from booking_master b left join sub_department_master sd 
-                            on b.sub_department_id=sd.sub_department_id
+            var currents: any = await this.getOfDB(`select   u.first_name,u.last_name,b.start_date,b.end_date,b.booking_description from  booking_master b
+                            left join user_master u on b.username=u.username
+                            left join sub_department_master sd 
+                            on u.sub_department_id=sd.sub_department_id
                             left join department_master d on
-                            sd.department_id=d.department_id  left join user_master u on b.username=u.username inner join room_master r on r.room_id=b.room_id where status_id='2' and r.room_name=$1 and b.end_date>=$2 and b.end_date<=$3 and b.flag='1' order by b.start_date`,
-                [room_number, moment().format("YYYY-MM-DD HH:mm:ss"), moment().format("YYYY-MM-DD") + " 23:59:59"]);
+                            sd.department_id=d.department_id   inner join room_master r on r.room_id=b.room_id where status_id='2' and r.room_id=$1 and b.end_date>=$2 and b.end_date<=$3 and b.flag='1' order by b.start_date`,
+                [room_id, moment().format("YYYY-MM-DD HH:mm:ss"), moment().format("YYYY-MM-DD") + " 23:59:59"]);
+            console.log(currents);
+
             if (currents.length == 0) {
             } else {
+
                 if (moment().isAfter(moment(currents[0].start_date))) {
                     if (currents.length > 0) {
 
@@ -97,47 +103,65 @@ export default class Booking extends Email {
                 }
 
             }
+            console.log({ code: 1, message: "ok", current, first, second });
+
             return res.json({ code: 1, message: "ok", current, first, second })
         } catch (e) {
             return res.json(e);
         }
     }
     getCurrentTask = async (req: Request, res: Response) => {
-        const { room_number } = req.body;
-        var empty = { name: "Room is Avaialble Now", time: "" };
-        var next_empty = { name: "No next reservation today", time: "" };
+        const { room_id } = req.body;
+        var empty = { name: "Room is Avaialble Now", time: "", booking_id: "" };
+        var next_empty = { name: "No next reservation today", time: "", booking_id: "" };
         var current = { ...empty };
         var next = { ...next_empty };
+        // console.log(req.body);
         try {
-            var currents: any = await this.getOfDB(`select   u.first_name,u.last_name,b.start_date,b.end_date,b.booking_description from booking_master b left join sub_department_master sd 
-                    on b.sub_department_id=sd.sub_department_id
+            var currents: any = await this.getOfDB(`select   u.first_name,u.last_name,b.start_date,b.end_date,b.booking_description,b.booking_id from booking_master b left join user_master u on b.username=u.username 
+                    left join sub_department_master sd 
+                    on u.sub_department_id=sd.sub_department_id
                     left join department_master d on
-                    sd.department_id=d.department_id  left join user_master u on b.username=u.username inner join room_master r on r.room_id=b.room_id where status_id='2' and r.room_name=$1 and b.start_date<CURRENT_TIMESTAMP and b.end_date>CURRENT_TIMESTAMP and b.flag='1'`, [room_number]);
-            var nexts: any = await this.getOfDB(`select   u.first_name,u.last_name,b.start_date,b.end_date,b.booking_description from booking_master b left join sub_department_master sd 
-                    on b.sub_department_id=sd.sub_department_id
+                    sd.department_id=d.department_id  inner join room_master r on r.room_id=b.room_id where status_id='2' and r.room_id=$1 and b.start_date<CURRENT_TIMESTAMP and b.end_date>CURRENT_TIMESTAMP and b.flag='1'`, [room_id]);
+            var end_date: string;
+            if (currents.length > 0) {
+                end_date = moment(currents[0].end_date).format("YYYY-MM-DD HH:mm:ss");
+            } else {
+                end_date = moment().format("YYYY-MM-DD HH:mm:ss");
+            }
+            var nexts: any = await this.getOfDB(`select   u.first_name,u.last_name,b.start_date,b.end_date,b.booking_description,b.booking_id from booking_master b left join user_master u on b.username=u.username  
+                    left join sub_department_master sd 
+                    on u.sub_department_id=sd.sub_department_id
                     left join department_master d on
-                    sd.department_id=d.department_id  left join user_master u on b.username=u.username inner join room_master r on r.room_id=b.room_id where status_id='2' and r.room_name=$1 and b.start_date>=$2 and b.end_date<=$3 order by b.start_date`,
-                [room_number, moment(currents[0].end_date).format("YYYY-MM-DD HH:mm:ss"), moment().format("YYYY-MM-DD") + " 23:59:59"]);
+                    sd.department_id=d.department_id  inner join room_master r on r.room_id=b.room_id where status_id='2' and r.room_id=$1 and b.start_date>=$2 and b.end_date<=$3 order by b.start_date`,
+                [room_id, end_date, moment().format("YYYY-MM-DD") + " 23:59:59"]);
 
             if (currents.length > 0) {
                 current.name = currents[0].first_name + " " + currents[0].last_name + " - " + currents[0].booking_description;
                 current.time = moment(currents[0].start_date).format("HH:mm") + " - " + moment(currents[0].end_date).format("HH:mm");
+                current.booking_id = currents[0].booking_id;
             }
             if (nexts.length > 0) {
                 next.name = nexts[0].first_name + " " + nexts[0].last_name + " - " + nexts[0].booking_description;
                 next.time = moment(nexts[0].start_date).format("HH:mm") + " - " + moment(nexts[0].end_date).format("HH:mm");
+                next.booking_id = nexts[0].booking_id;
             }
+            // console.log({ code: 1, message: "ok", current, next });
+
             return res.json({ code: 1, message: "ok", current, next });
         } catch (e) {
+            console.log(e);
             return res.json(e);
         }
     }
     public getBooking = async (req: Request, res: Response) => {
         try {
-            var books = await this.getOfDB(`select * from booking_master b left join sub_department_master sd 
-                on b.sub_department_id=sd.sub_department_id
+            var books = await this.getOfDB(`select * from booking_master b 
+                inner join user_master u on u.username=b.username
+                left join sub_department_master sd 
+                on u.sub_department_id=sd.sub_department_id
                 left join department_master d on
-                sd.department_id=d.department_id  inner join user_master u on b.username=u.username inner join room_master r on r.room_id=b.room_id where status_id='1' and b.flag='1'`, []);
+                sd.department_id=d.department_id  inner join room_master r on r.room_id=b.room_id where status_id='1' and b.flag='1'`, []);
             return res.json({ code: 1, message: 'ok', data: books });
         } catch (e) {
             return res.json(e);
@@ -145,10 +169,12 @@ export default class Booking extends Email {
     }
     public getBooked = async (req: Request, res: Response) => {
         try {
-            var books = await this.getOfDB(`select * from booking_master b left join sub_department_master sd 
-                on b.sub_department_id=sd.sub_department_id
+            var books = await this.getOfDB(`select * from booking_master b 
+                inner join user_master u on u.username=b.username
+                left join sub_department_master sd 
+                on u.sub_department_id=sd.sub_department_id
                 left join department_master d on
-                sd.department_id=d.department_id  inner join user_master u on b.username=u.username inner join room_master r on r.room_id=b.room_id where status_id='2' and b.flag='1'`, []);
+                sd.department_id=d.department_id  inner join room_master r on r.room_id=b.room_id where status_id='2' and b.flag='1'`, []);
 
             return res.json({ code: 1, message: 'ok', data: books });
         } catch (e) {
@@ -157,10 +183,12 @@ export default class Booking extends Email {
     }
     public getRejected = async (req: Request, res: Response) => {
         try {
-            var books = await this.getOfDB(`select * from booking_master b left join sub_department_master sd 
-                on b.sub_department_id=sd.sub_department_id
+            var books = await this.getOfDB(`select * from booking_master b 
+                inner join user_master on u.username=b.username
+                left join sub_department_master sd 
+                on u.sub_department_id=sd.sub_department_id
                 left join department_master d on
-                sd.department_id=d.department_id  inner join user_master u on b.username=u.username inner join room_master r on r.room_id=b.room_id where status_id='0' and b.flag='1'`, []);
+                sd.department_id=d.department_id  inner join room_master r on r.room_id=b.room_id where status_id='0' and b.flag='1'`, []);
             return res.json({ code: 1, message: 'ok', data: books });
         } catch (e) {
             return res.json(e);
@@ -169,10 +197,12 @@ export default class Booking extends Email {
     public getBookingHistory = async (req: Request, res: Response) => {
         var { start_date, end_date } = req.body;
         try {
-            var books = await this.getOfDB(`select * from booking_master b left join sub_department_master sd 
-                on b.sub_department_id=sd.sub_department_id
+            var books = await this.getOfDB(`select * from booking_master b 
+                inner join user_master u on u.username=b.username
+                left join sub_department_master sd 
+                on u.sub_department_id=sd.sub_department_id
                 left join department_master d on
-                sd.department_id=d.department_id  inner join user_master u on b.username=u.username inner join room_master r on r.room_id=b.room_id inner join booking_status bs on bs.status_id=b.status_id where b.flag='1' and b.start_date>='${start_date}' and end_date<='${end_date}' order by b.start_date`, []);
+                sd.department_id=d.department_id  inner join room_master r on r.room_id=b.room_id inner join booking_status bs on bs.status_id=b.status_id where b.flag='1' and b.start_date>='${start_date}' and end_date<='${end_date}' order by b.start_date`, []);
             return res.json({ code: 1, message: 'ok', data: books });
         } catch (e) {
             return res.json(e);
@@ -181,10 +211,12 @@ export default class Booking extends Email {
     public getUserBooking = async (req: Request, res: Response) => {
         var { username } = req.body;
         try {
-            var books = await this.getOfDB(`select * from booking_master b left join sub_department_master sd 
-                on b.sub_department_id=sd.sub_department_id
+            var books = await this.getOfDB(`select * from booking_master b
+                inner join user_master u on u.username=b.username
+                left join sub_department_master sd 
+                on u.sub_department_id=sd.sub_department_id
                 left join department_master d on
-                sd.department_id=d.department_id  inner join user_master u on b.username=u.username inner join room_master r on r.room_id=b.room_id where status_id='1' and b.flag='1' and u.username=$1`, [username]);
+                sd.department_id=d.department_id  inner join room_master r on r.room_id=b.room_id where status_id='1' and b.flag='1' and u.username=$1`, [username]);
             return res.json({ code: 1, message: 'ok', data: books });
         } catch (e) {
             return res.json(e);
@@ -193,10 +225,12 @@ export default class Booking extends Email {
     public getUserBooked = async (req: Request, res: Response) => {
         var { username } = req.body;
         try {
-            var books = await this.getOfDB(`select * from booking_master b left join sub_department_master sd 
-                on b.sub_department_id=sd.sub_department_id
+            var books = await this.getOfDB(`select * from booking_master b 
+                inner join user_master u on u.username=b.username
+                left join sub_department_master sd 
+                on u.sub_department_id=sd.sub_department_id
                 left join department_master d on
-                sd.department_id=d.department_id  inner join user_master u on b.username=u.username inner join room_master r on r.room_id=b.room_id where status_id='2' and b.flag='1' and u.username=$1`, [username]);
+                sd.department_id=d.department_id  inner join room_master r on r.room_id=b.room_id where status_id='2' and b.flag='1' and u.username=$1`, [username]);
             return res.json({ code: 1, message: 'ok', data: books });
         } catch (e) {
             return res.json(e);
@@ -205,10 +239,12 @@ export default class Booking extends Email {
     public getUserRejected = async (req: Request, res: Response) => {
         var { username } = req.body;
         try {
-            var books = await this.getOfDB(`select * from booking_master b left join sub_department_master sd 
-                on b.sub_department_id=sd.sub_department_id
+            var books = await this.getOfDB(`select * from booking_master b 
+                inner join user_master u on u.username=b.username
+                left join sub_department_master sd 
+                on u.sub_department_id=sd.sub_department_id
                 left join department_master d on
-                sd.department_id=d.department_id  inner join user_master u on b.username=u.username inner join room_master r on r.room_id=b.room_id where status_id='0' and b.flag='1' and u.username=$1`, [username]);
+                sd.department_id=d.department_id  inner join room_master r on r.room_id=b.room_id where status_id='0' and b.flag='1' and u.username=$1`, [username]);
             return res.json({ code: 1, message: 'ok', data: books });
         } catch (e) {
             return res.json(e);
@@ -217,10 +253,12 @@ export default class Booking extends Email {
     public getUserBookingHistory = async (req: Request, res: Response) => {
         var { start_date, end_date, username } = req.body;
         try {
-            var books = await this.getOfDB(`select * from booking_master b left join sub_department_master sd 
-                on b.sub_department_id=sd.sub_department_id
+            var books = await this.getOfDB(`select * from booking_master b 
+                inner join user_master u on u.username=b.username
+                left join sub_department_master sd 
+                on u.sub_department_id=sd.sub_department_id
                 left join department_master d on
-                sd.department_id=d.department_id  inner join user_master u on b.username=u.username inner join room_master r on r.room_id=b.room_id inner join booking_status bs on bs.status_id=b.status_id where b.flag='1' and b.start_date>='${start_date}' and end_date<='${end_date}' and u.username=$1 order by b.start_date`, [username]);
+                sd.department_id=d.department_id  inner join room_master r on r.room_id=b.room_id inner join booking_status bs on bs.status_id=b.status_id where b.flag='1' and b.start_date>='${start_date}' and end_date<='${end_date}' and u.username=$1 order by b.start_date`, [username]);
             return res.json({ code: 1, message: 'ok', data: books });
         } catch (e) {
             return res.json(e);
@@ -286,10 +324,12 @@ export default class Booking extends Email {
     public getRoomBooking = async (req: Request, res: Response) => {
         const { room_id } = req.body;
         try {
-            var books: any = await this.getOfDB(`select b.booking_description as subject,b.start_date,b.end_date,u.first_name,u.last_name from booking_master b left join sub_department_master sd 
-                on b.sub_department_id=sd.sub_department_id
+            var books: any = await this.getOfDB(`select b.booking_description as subject,b.start_date,b.end_date,u.first_name,u.last_name from booking_master b 
+                left join user_master u on b.username=u.username
+                left join sub_department_master sd 
+                on u.sub_department_id=sd.sub_department_id
                 left join department_master d on
-                sd.department_id=d.department_id  left join user_master u on b.username=u.username where room_id=$1 and (not (status_id='0' or status_id='-1')) and b.flag='1'`, [room_id]);
+                sd.department_id=d.department_id  where room_id=$1 and (not (status_id='0' or status_id='-1')) and b.flag='1'`, [room_id]);
             console.log(books);
             res.send({
                 code: 1, message: "ok", data: books.map((item: any) => {

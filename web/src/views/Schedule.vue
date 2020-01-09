@@ -3,7 +3,7 @@
     <vx-card>
       <h6>{{ $t("Schedule Table") }}</h6>
       <div class="vx-row mb-10">
-        <div class="vx-col md:w-1/3 mt-6">
+        <div class="vx-col md:w-1/3 sm:w-1/2 w-full mt-6">
           <label>{{ $t("Building") }}</label>
           <vs-select class="w-full" v-model="editObj.building_id" :danger="invalid.building_id">
             <vs-select-item
@@ -15,7 +15,7 @@
           </vs-select>
           <div class="errors" v-if="invalid.building_id">{{ $t("please select the buildign") }}</div>
         </div>
-        <div class="vx-col md:w-1/3 mt-6">
+        <div class="vx-col md:w-1/3 sm:w-1/2 w-full mt-6">
           <label>{{ $t("room") }}</label>
           <vs-select class="w-full" v-model="editObj.room_id" :danger="invalid.room_id">
             <vs-select-item
@@ -27,14 +27,16 @@
           </vs-select>
           <div class="errors" v-if="invalid.room_id">{{ $t("please select the room_id") }}</div>
         </div>
-        <div class="vx-col md:w-1/3 mt-6">
-          <vs-button
-            ref="loadableButton"
-            id="button-with-loading"
-            class="vs-con-loading__container mt-5"
-            vslor="primary"
-            @click="search()"
-          >{{ $t("search") }}</vs-button>
+        <div class="vx-col md:w-1/3 w-full mt-6">
+          <div class="vx-row md:pl-0 md:pr-10 pl-4 pr-4">
+            <vs-button
+              ref="loadableButton"
+              id="button-with-loading"
+              class="vs-con-loading__container mt-5 sm:w-1/2 md:w-full lg:w-1/2 w-full"
+              vslor="primary"
+              @click="search()"
+            >{{ $t("search") }}</vs-button>
+          </div>
         </div>
       </div>
       <JqxScheduler

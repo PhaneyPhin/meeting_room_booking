@@ -70,49 +70,49 @@
     </vx-card>
     <vs-popup class="holamundo" :title="$t('view')" :active.sync="popupActive">
       <div class="vx-row mt-5">
-        <div class="vx-col md:w-1/4" align="right">{{$t('Officer')}}:</div>
-        <div class="vx-col md:w-3/4 value">{{view['department_name_'+$i18n.locale]}}</div>
+        <div class="vx-col md:w-1/4 w-1/2 pl-5">{{$t('Officer')}}:</div>
+        <div class="vx-col md:w-3/4 w-1/2 pl-5 value">{{view['department_name_'+$i18n.locale]}}</div>
       </div>
       <div class="vx-row mt-5">
-        <div class="vx-col md:w-1/4" align="right">{{$t('Department')}}:</div>
-        <div class="vx-col md:w-3/4 value">{{view['sub_department_name_'+$i18n.locale]}}</div>
+        <div class="vx-col md:w-1/4 w-1/2 pl-5">{{$t('Department')}}:</div>
+        <div class="vx-col md:w-3/4 w-1/2 pl-5 value">{{view['sub_department_name_'+$i18n.locale]}}</div>
       </div>
       <div class="vx-row mt-5">
-        <div class="vx-col md:w-1/4" align="right">{{$t('booking_description')}}:</div>
-        <div class="vx-col md:w-3/4 value">{{view.booking_description}}</div>
+        <div class="vx-col md:w-1/4 w-1/2 pl-5">{{$t('booking_description')}}:</div>
+        <div class="vx-col md:w-3/4 w-1/2 pl-5 value">{{view.booking_description}}</div>
       </div>
       <div class="vx-row mt-5">
-        <div class="vx-col md:w-1/4" align="right">{{$t('booking_id')}}:</div>
-        <div class="vx-col md:w-1/4 value">{{view.booking_id}}</div>
-        <div class="vx-col md:w-1/4" align="right">{{$t('first_surname')}}:</div>
-        <div class="vx-col md:w-1/4 value">{{view.first_name+' '+view.last_name}}</div>
-      </div>
-
-      <div class="vx-row mt-5">
-        <div class="vx-col md:w-1/4" align="right">{{$t('room_name')}}:</div>
-        <div class="vx-col md:w-1/4 value">{{view.room_name}}</div>
-        <div class="vx-col md:w-1/4" align="right">{{$t('important')}}:</div>
-        <div class="vx-col md:w-1/4 value">{{view.important}}</div>
+        <div class="vx-col md:w-1/4 w-1/2 pl-5">{{$t('booking_id')}}:</div>
+        <div class="vx-col md:w-1/4 w-1/2 pl-5 value">{{view.booking_id}}</div>
+        <div class="vx-col md:w-1/4 w-1/2 pl-5">{{$t('first_surname')}}:</div>
+        <div class="vx-col md:w-1/4 w-1/2 pl-5 value">{{view.first_name+' '+view.last_name}}</div>
       </div>
 
       <div class="vx-row mt-5">
-        <div class="vx-col md:w-1/4" align="right">{{$t('Remark')}}:</div>
-        <div class="vx-col md:w-1/4 value">{{view.remark}}</div>
-        <div class="vx-col md:w-1/4" align="right">{{$t('Tel')}}:</div>
-        <div class="vx-col md:w-1/4 value">{{view.tel}}</div>
+        <div class="vx-col md:w-1/4 w-1/2 pl-5">{{$t('room_name')}}:</div>
+        <div class="vx-col md:w-1/4 w-1/2 pl-5 value">{{view.room_name}}</div>
+        <div class="vx-col md:w-1/4 w-1/2 pl-5">{{$t('importance')}}:</div>
+        <div class="vx-col md:w-1/4 w-1/2 pl-5 value">{{$t(view.important)}}</div>
+      </div>
+
+      <div class="vx-row mt-5">
+        <div class="vx-col md:w-1/4 w-1/2 pl-5">{{$t('Remark')}}:</div>
+        <div class="vx-col md:w-1/4 w-1/2 pl-5 value">{{view.remark}}</div>
+        <div class="vx-col md:w-1/4 w-1/2 pl-5">{{$t('Tel')}}:</div>
+        <div class="vx-col md:w-1/4 w-1/2 pl-5 value">{{view.tel}}</div>
       </div>
       <div class="vx-row mt-5">
-        <div class="vx-col md:w-1/4" align="right">{{$t('Member')}}:</div>
-        <div class="vx-col md:w-1/4 value">{{view.member}}</div>
-        <div class="vx-col md:w-1/4" align="right">{{$t('booking_date')}}:</div>
-        <div class="vx-col md:w-1/4 value">{{view.booking_date | onlyDate}}</div>
+        <div class="vx-col md:w-1/4 w-1/2 pl-5">{{$t('Member')}}:</div>
+        <div class="vx-col md:w-1/4 w-1/2 pl-5 value">{{view.member}}</div>
+        <div class="vx-col md:w-1/4 w-1/2 pl-5">{{$t('booking_date')}}:</div>
+        <div class="vx-col md:w-1/4 w-1/2 pl-5 value">{{view.booking_date | onlyDate}}</div>
       </div>
       <div class="vx-row mt-5">
-        <div class="vx-col md:w-1/4" align="right">{{$t('date')}}:</div>
-        <div class="vx-col md:w-1/4 value">{{view.start_date | onlyDate}}</div>
-        <div class="vx-col md:w-1/4" align="right">{{$t('time')}}:</div>
+        <div class="vx-col md:w-1/4 w-1/2 pl-5">{{$t('date')}}:</div>
+        <div class="vx-col md:w-1/4 w-1/2 pl-5 value">{{view.start_date | onlyDate}}</div>
+        <div class="vx-col md:w-1/4 w-1/2 pl-5">{{$t('time')}}:</div>
         <div
-          class="vx-col md:w-1/4 value"
+          class="vx-col md:w-1/4 w-1/2 pl-5 value"
         >{{view.start_date | onlyTime}}-{{view.end_date | onlyTime}}</div>
       </div>
       <v-template v-if="materials.length>0">

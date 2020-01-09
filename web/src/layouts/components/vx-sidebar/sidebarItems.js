@@ -30,7 +30,7 @@ export default [
   {
     url: '/cost',
     name: "Analytics",
-    icon: "HomeIcon",
+    icon: "BarChartIcon",
     slug: "dashboardAnalytics",
     i18n: "Cost",
   },
@@ -65,21 +65,21 @@ export default [
   {
     url: '/officer',
     name: "eCommerce",
-    icon: "LayoutIcon",
+    icon: "GridIcon",
     slug: "dashboardECommerce",
     i18n: "Officer Data",
   },
   {
     url: '/department',
     name: "eCommerce",
-    icon: "LayoutIcon",
+    icon: "HardDriveIcon",
     slug: "dashboardECommerce",
     i18n: "Department Data",
   },
   {
     url: '/schedule',
     name: "eCommerce",
-    icon: "LayoutIcon",
+    icon: "FileTextIcon",
     slug: "dashboardECommerce",
     i18n: "Schedule Table",
   },

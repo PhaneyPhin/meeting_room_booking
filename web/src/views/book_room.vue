@@ -4,7 +4,7 @@
       <vx-card>
         <h6>{{$t("search_free_room")}}</h6>
         <div class="vx-row">
-          <div class="vx-col md:w-1/3 mt-6">
+          <div class="vx-col md:w-1/3 sm:w-1/2 w-full mt-6">
             <label>{{$t("Building")}}</label>
             <vs-select class="w-full" v-model="editObj.building_id">
               <vs-select-item value :text="$t('all')" />
@@ -16,7 +16,7 @@
               />
             </vs-select>
           </div>
-          <div class="vx-col md:w-1/3 mt-6">
+          <div class="vx-col md:w-1/3 sm:w-1/2 w-full mt-6">
             <label>{{$t("room")}}</label>
             <vs-select class="w-full" v-model="editObj.room_id">
               <vs-select-item value :text="$t('all')" />
@@ -30,7 +30,7 @@
           </div>
         </div>
         <div class="vx-row">
-          <div class="vx-col md:w-1/3 mt-6">
+          <div class="vx-col md:w-1/3 sm:w-1/2 w-full mt-6">
             <label>{{$t("date")}}</label>
             <flat-pickr
               :config="configdateTimePicker"
@@ -40,7 +40,7 @@
             />
           </div>
 
-          <div class="vx-col md:w-1/3 mt-6">
+          <div class="vx-col md:w-1/3 sm:w-1/2 w-full mt-6">
             <div style="width:45%;float:left">
               <label>{{$t("time")}}</label>
               <flat-pickr
@@ -61,7 +61,7 @@
               />
             </div>
           </div>
-          <div class="vx-col md:w-1/6 mt-6" style="padding-top:20px;">
+          <div class="vx-col md:w-1/6 sm:w-1/2 w-full mt-6" style="padding-top:20px;">
             <vs-button
               ref="loadableButton"
               id="button-with-loading"
@@ -77,7 +77,7 @@
         <div
           v-for="(item,index) in room_lists"
           :key="index"
-          class="vx-col md:w-1/3 mt-5"
+          class="vx-col lg:w-1/3 md:w-1/2 w-full mt-5"
           style="padding:10px"
         >
           <vx-card class="w-full">
@@ -128,8 +128,22 @@
             <h6>{{$t('booking_room')}}</h6>
           </div>
         </div>
-        <div class="mt-6 vx-row ml-10 mr-10">
-          <div class="vx-col md:w-1/2">
+        <div class="mt-6 vx-row lg:ml-10 lg:mr-10">
+          <div class="vx-col w-1/3 mt-5">{{$t("username")}}</div>
+          <div
+            class="vx-col w-2/3 text-primary mt-5"
+          >{{booking_data.first_name+' '+booking_data.last_name}}</div>
+          <div class="vx-col lg:w-1/2 w-full">
+            <div class="vx-row">
+              <div class="vx-col w-1/3">{{$t("username")}}</div>
+              <div
+                class="vx-col w-2/3 text-primary"
+              >{{booking_data.first_name+' '+booking_data.last_name}}</div>
+            </div>
+            <div class="vx-row mt-5">
+              <div class="vx-col w-1/3">{{$t("start_date")}}</div>
+              <div class="vx-col w-2/3 text-primary">{{booking_data.start_date}}</div>
+            </div>
             <table style="width:100%">
               <tr>
                 <td style="padding:5px">{{$t("username")}}</td>
@@ -146,14 +160,14 @@
               </tr>
             </table>
           </div>
-          <div class="vx-col md:w-1/2">
+          <div class="vx-col lg:w-1/2 w-full">
             <table style="width:100%">
               <tr>
                 <td>{{$t("room_name")}}</td>
                 <td class="text-primary">{{booking_data.room_name}}</td>
               </tr>
               <tr></tr>
-              <tr style>
+              <tr>
                 <td>{{$t('end_date')}}</td>
                 <td class="text-primary">{{booking_data.end_date}}</td>
               </tr>
@@ -161,202 +175,146 @@
           </div>
         </div>
         <vs-divider position="left">{{$t("detail_input")}}</vs-divider>
-        <div class="vx-row mt-10">
-          <div class="vx-col md:w-1/4" style="text-align:right">
-            {{$t("detail")}}
-            <span class="require">*</span>:
+        <div class="container">
+          <div class="vx-row mt-10">
+            <div class="vx-col md:w-1/4 sm:w-1/3 w-full">
+              {{$t("detail")}}
+              <span class="require">*</span>:
+            </div>
+            <div class="vx-col md:w-3/4 sm:w-2/3 w-full">
+              <vs-input class="w-full" v-model="detail" :danger="submitted&&detail==''" />
+              <div class="errors" v-if="submitted&&detail==''">{{$t("Please input subject")}}</div>
+            </div>
           </div>
-          <div class="vx-col md:w-1/2">
-            <vs-input class="w-full" v-model="detail" :danger="submitted&&detail==''" />
-            <div class="errors" v-if="submitted&&detail==''">{{$t("Please input subject")}}</div>
-          </div>
-        </div>
-        <div class="vx-row mt-10">
-          <div class="vx-col md:w-1/4" style="text-align:right">
-            {{$t("Officer")}}
-            <span class="require">*</span>:
-          </div>
-          <div class="vx-col md:w-1/2">
-            <vs-select
-              class="w-full"
-              v-model="department_id"
-              :danger="department_id==''&&submitted"
-            >
-              <vs-select-item
-                :key="index"
-                :value="item.department_id"
-                :text="item['department_name_'+$i18n.locale]"
-                v-for="(item,index) in departments"
-              />
-            </vs-select>
-            <div class="errors" v-if="submitted&&department_id==''">{{$t("Please select officer")}}</div>
-          </div>
-        </div>
-        <div class="vx-row mt-10">
-          <div class="vx-col md:w-1/4" style="text-align:right">
-            {{$t("Department")}}
-            <span class="require">*</span>:
-          </div>
-          <div class="vx-col md:w-1/2">
-            <vs-select
-              class="w-full"
-              v-model="sub_department_id"
-              :danger="sub_department_id==''&&submitted"
-            >
-              <vs-select-item
-                :key="index"
-                :value="item.sub_department_id"
-                :text="item['sub_department_name_'+$i18n.locale]"
-                v-for="(item,index) in subdepartments"
-              />
-            </vs-select>
-            <div
-              class="errors"
-              v-if="submitted&&sub_department_id==''"
-            >{{$t("Please select department")}}</div>
-          </div>
-        </div>
-        <div class="vx-row mt-5 mb-10">
-          <div class="vx-col md:w-1/4" style="text-align:right">
-            {{$t("importance")}} :
-            <span class="require">*</span>
-          </div>
-          <div class="vx-col md:w-1/2">
-            <vs-select class="w-full" v-model="important" :danger="important==''&&submitted">
-              <vs-select-item
-                :key="index"
-                :value="item"
-                :text="$t(item)"
-                v-for="(item,index) in important_lists"
-              />
-            </vs-select>
 
-            <div class="errors" v-if="submitted&&important==''">{{$t("Please select important")}}</div>
+          <div class="vx-row mt-5 mb-10">
+            <div class="vx-col md:w-1/4 sm:w-1/3 w-full">
+              {{$t("importance")}} :
+              <span class="require">*</span>
+            </div>
+            <div class="vx-col md:w-3/4 sm:w-2/3 w-full">
+              <vs-select class="w-full" v-model="important" :danger="important==''&&submitted">
+                <vs-select-item
+                  :key="index"
+                  :value="item"
+                  :text="$t(item)"
+                  v-for="(item,index) in important_lists"
+                />
+              </vs-select>
+
+              <div class="errors" v-if="submitted&&important==''">{{$t("Please select important")}}</div>
+            </div>
           </div>
-        </div>
-        <div class="vx-row mt-5 mb-10">
-          <div class="vx-col md:w-1/4" style="text-align:right">
-            {{$t("Number of Member")}} :
-            <span class="require">*</span>
+          <div class="vx-row mt-5 mb-10">
+            <div class="vx-col md:w-1/4 sm:w-1/3 w-full">
+              {{$t("Number of Member")}} :
+              <span class="require">*</span>
+            </div>
+            <div class="vx-col md:w-3/4 sm:w-2/3 w-full">
+              <vs-input
+                class="w-full"
+                v-model="member"
+                :danger="submitted&&member==''"
+                @keypress="checkNumber"
+              />
+              <div
+                class="errors"
+                v-if="submitted&&member==''"
+              >{{$t("Please input number of member")}}</div>
+            </div>
           </div>
-          <div class="vx-col md:w-1/2">
-            <vs-input
-              class="w-full"
-              v-model="member"
-              :danger="submitted&&member==''"
-              @keypress="checkNumber"
-            />
-            <div class="errors" v-if="submitted&&member==''">{{$t("Please input number of member")}}</div>
+          <div class="vx-row mt-5 mb-10">
+            <div class="vx-col md:w-1/4 sm:w-1/3 w-full">
+              {{$t("Remark")}} :
+              <span class="require">*</span>
+            </div>
+            <div class="vx-col md:w-3/4 sm:w-2/3 w-full">
+              <vs-input class="w-full" v-model="remark" :danger="submitted&&remark==''" />
+              <div class="errors" v-if="submitted&&remark==''">{{$t("Please input remark")}}</div>
+            </div>
           </div>
-        </div>
-        <div class="vx-row mt-5 mb-10">
-          <div class="vx-col md:w-1/4" style="text-align:right">
-            {{$t("Remark")}} :
-            <span class="require">*</span>
-          </div>
-          <div class="vx-col md:w-1/2">
-            <vs-input class="w-full" v-model="remark" :danger="submitted&&remark==''" />
-            <div class="errors" v-if="submitted&&remark==''">{{$t("Please input remark")}}</div>
-          </div>
-        </div>
-        <div class="vx-row mt-5 mb-10">
-          <div class="vx-col md:w-1/4" style="text-align:right">
-            {{$t("Tel")}} :
-            <span class="require">*</span>
-          </div>
-          <div class="vx-col md:w-1/2">
-            <vs-input
-              class="w-full"
-              v-model="tel"
-              :danger="submitted&&tel==''"
-              maxlength="10"
-              @keypress="checkNumber"
-            />
-            <div class="errors" v-if="submitted&&tel==''">{{$t("Please input remark")}}</div>
+          <div class="vx-row mt-5 mb-10">
+            <div class="vx-col md:w-1/4 sm:w-1/3 w-full">
+              {{$t("Tel")}} :
+              <span class="require">*</span>
+            </div>
+            <div class="vx-col md:w-3/4 sm:w-2/3 w-full">
+              <vs-input
+                class="w-full"
+                v-model="tel"
+                :danger="submitted&&tel==''"
+                maxlength="10"
+                @keypress="checkNumber"
+              />
+              <div class="errors" v-if="submitted&&tel==''">{{$t("Please input remark")}}</div>
+            </div>
           </div>
         </div>
         <vs-divider position="left">{{$t("material_using")}}</vs-divider>
-        <div class="vx-row">
-          <div class="vx-col md:w-1/4" style="text-align:right"></div>
-          <div class="vx-col md:w-1/4 mt-5">
-            <vs-button
-              color="primary"
-              icon-pack="feather"
-              icon="icon-plus"
-              @click="add()"
-            >{{$t('add')}}</vs-button>
+        <div class="container">
+          <div class="vx-row">
+            <div class="vx-col w-full mt-5">
+              <vs-button
+                color="primary"
+                icon-pack="feather"
+                icon="icon-plus"
+                @click="add()"
+              >{{$t('add')}}</vs-button>
+            </div>
           </div>
-        </div>
-        <div class="vx-row" v-for="(item,index) in material_lists" :key="index">
-          <div class="vx-col md:w-1/4" style="text-align:right"></div>
-          <div class="vx-col md:w-1/4 mt-5">
-            {{$t("material")}} ({{$t('material_price')}})
-            <vs-select
-              class="w-full"
-              v-model="item.material_id"
-              :danger="item.material_id==''&&submitted"
-            >
-              <vs-select-item
-                :key="index"
-                :value="material.material_id"
-                :text="$t(material.material_name+' ('+material.material_price+')')"
-                v-for="(material,index) in materials"
+          <div class="vx-row" v-for="(item,index) in material_lists" :key="index">
+            <div class="vx-col md:w-1/3 sm:w-1/2 w-full mt-5">
+              {{$t("material")}} ({{$t('material_price')}})
+              <vs-select
+                class="w-full"
+                v-model="item.material_id"
+                :danger="item.material_id==''&&submitted"
+              >
+                <vs-select-item
+                  :key="index"
+                  :value="material.material_id"
+                  :text="$t(material.material_name+' ('+material.material_price+')')"
+                  v-for="(material,index) in materials"
+                />
+              </vs-select>
+              <div
+                class="errors"
+                v-if="item.material_id==''&&submitted"
+              >{{$t('please select material')}}</div>
+            </div>
+            <div class="vx-col md:w-1/3 sm:w-1/2 w-full mt-5">
+              {{$t("material_number")}}
+              <vs-input
+                class="w-full"
+                v-model="item.material_number"
+                @keypress="checkNumber"
+                :danger="item.material_number==''&&submitted"
               />
-            </vs-select>
-            <div
-              class="errors"
-              v-if="item.material_id==''&&submitted"
-            >{{$t('please select material')}}</div>
-          </div>
-          <div class="vx-col md:w-1/4 mt-5">
-            {{$t("material_number")}}
-            <vs-input
-              class="w-full"
-              v-model="item.material_number"
-              @keypress="checkNumber"
-              :danger="item.material_number==''&&submitted"
-            />
-            <div
-              class="errors"
-              v-if="item.material_number==''&&submitted"
-            >{{$t('please input the number of material')}}</div>
-          </div>
-          <div class="vx-col md:w-1/4 mt-10">
-            <vs-button
-              ref="loadableButton"
-              color="danger"
-              @click="material_lists.splice(index,1)"
-            >{{$t('remove')}}</vs-button>
+              <div
+                class="errors"
+                v-if="item.material_number==''&&submitted"
+              >{{$t('please input the number of material')}}</div>
+            </div>
+            <div class="vx-col md:w-1/3 sm:w-1/2 w-full mt-10">
+              <vs-button
+                ref="loadableButton"
+                color="danger"
+                @click="material_lists.splice(index,1)"
+              >{{$t('remove')}}</vs-button>
+            </div>
           </div>
         </div>
 
-        <!-- <div class="vx-row">
-          <div class="vx-col md:w-1/4" style="text-align:right"></div>
-          <div class="vx-col md:w-1/4 mt-5">
-            {{$t("material")}} ({{$t('material_price')}})
-            <vs-select class="w-full" v-model="material.material_id">
-              <vs-select-item
-                :key="index"
-                :value="item.material_id"
-                :text="$t(item.material_name+ '('+item.material_price+')')"
-                v-for="(item,index) in materials"
-              />
-            </vs-select>
-          </div>
-          <div class="vx-col md:w-1/4 mt-5">
-            {{$t("material_number")}}
-            <vs-input class="w-full" v-model="material.material_number" @keypress="checkNumber" />
-          </div>
-        </div>-->
-        <div class="vx-row mt-10">
-          <div class="w-full">
-            <vs-button
-              class="right"
-              color="danger"
-              type="border"
-              @click="booking=false;booking_data={}"
-            >{{$t('cancel')}}</vs-button>
-            <vs-button class="right" @click="save()">{{$t('save')}}</vs-button>
+        <div class="container">
+          <div class="vx-row mt-10">
+            <div class="w-full">
+              <vs-button class="mr-4" @click="save()">{{$t('save')}}</vs-button>
+              <vs-button
+                color="danger"
+                type="border"
+                @click="booking=false;booking_data={}"
+              >{{$t('cancel')}}</vs-button>
+            </div>
           </div>
         </div>
       </vx-card>
@@ -388,9 +346,6 @@
 td {
   width: 50%;
   padding: 10px;
-}
-tr td:first-child {
-  padding-left: 30px;
 }
 </style>
 
@@ -429,10 +384,6 @@ export default {
       booking_data: {},
       material: {},
       material_lists: [],
-      departments: [],
-      subdepartments: [],
-      sub_department_id: "",
-      department_id: "",
       configdateTimePicker: {
         enableTime: false,
         enableSeconds: false,
@@ -489,8 +440,6 @@ export default {
         start_time: moment().format("HH:mm:ss"),
         end_time: "17:30:00"
       };
-      var response = await service.postData("department/getDepartment", {});
-      this.departments = response.data;
     },
     search() {
       this.searched = true;
@@ -550,7 +499,6 @@ export default {
         this.member != "" &&
         this.remark != "" &&
         this.tel != "" &&
-        this.sub_department_id != "" &&
         this.checkMaterial()
       ) {
         var materials = this.material_lists.map(item => item);
@@ -592,8 +540,7 @@ export default {
                 important: this.important,
                 member: this.member,
                 remark: this.remark,
-                tel: this.tel,
-                sub_department_id: this.sub_department_id
+                tel: this.tel
               })
               .then(result => {
                 return result;
@@ -635,18 +582,6 @@ export default {
         building_id: this.editObj.building_id
       });
       this.rooms = result.data;
-    },
-    async department_id(val) {
-      if (val != "") {
-        try {
-          this.sub_department_id = "";
-          var response = await service.postData(
-            "subDepartment/getSubDepartment",
-            { department_id: val }
-          );
-          this.subdepartments = response.data;
-        } catch (e) {}
-      }
     }
   }
 };

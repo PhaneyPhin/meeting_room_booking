@@ -57,7 +57,7 @@
           <div class="mt-3">
             <div class="container">
               <div class="vx-row">
-                <div class="vx-col md:w-full mt-5">
+                <div class="vx-col w-full mt-5">
                   <label for>{{$t("Officer's Thai Name")}}</label>
                   <vs-input
                     v-model="editObj.department_name_th"
@@ -69,7 +69,7 @@
                     v-if="invalid.department_name_th"
                   >{{$t("Please input Officer's Thai Name")}}</div>
                 </div>
-                <div class="vx-col md:w-full mt-5">
+                <div class="vx-col w-full mt-5">
                   <label for>{{$t("Officer's English Name")}}</label>
                   <vs-input
                     v-model="editObj.department_name_en"
@@ -102,11 +102,11 @@
       </vs-tabs>
       <vs-popup class="holamundo" :title="$t('edit_title')" :active.sync="popupActive">
         <div class="vx-row">
-          <div class="vx-col md:w-full mt-5">
+          <div class="vx-col w-full mt-5">
             <label for>{{$t("Officer ID")}}</label>
             <vs-input v-model="editObj.department_id" class="w-full" disabled />
           </div>
-          <div class="vx-col md:w-full mt-5">
+          <div class="vx-col w-full mt-5">
             <label for>{{$t("Officer's Thai Name")}}</label>
             <vs-input
               v-model="editObj.department_name_th"
@@ -118,7 +118,7 @@
               v-if="invalid.department_name_th"
             >{{$t("Please input Officer's Thai Name")}}</div>
           </div>
-          <div class="vx-col md:w-full mt-5">
+          <div class="vx-col w-full mt-5">
             <label for>{{$t("Officer's English Name")}}</label>
             <vs-input
               v-model="editObj.department_name_en"

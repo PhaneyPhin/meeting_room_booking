@@ -11,4 +11,5 @@ router.post("/getSubDepartment", subDepartment.getSubDepartment);
 router.post("/createSubDepartment", CheckAdmin, subDepartment.addSubDepartment);
 router.post("/updateSubDepartment", CheckAdmin, subDepartment.updateSubDepartment);
 router.post("/deleteSubDepartment", CheckAdmin, subDepartment.deleteSubDepartment);
+router.post("/getSubDepartmentByDepartmentID", subDepartment.getSubDepartmentByDepartmentId);
 exports.default = router;

@@ -48,6 +48,17 @@ class SubDepartment extends DBHelper_1.default {
                 return res.json(e);
             }
         });
+        this.getSubDepartmentByDepartmentId = (req, res, next) => tslib_1.__awaiter(this, void 0, void 0, function* () {
+            const { department_id } = req.body;
+            console.log(department_id);
+            try {
+                var subDepartments = yield this.getOfDB(`select * from sub_department_master where department_id=$1`, [department_id]);
+                return res.json({ code: 1, message: 'ok', data: subDepartments });
+            }
+            catch (e) {
+                return res.json(e);
+            }
+        });
     }
 }
 exports.default = SubDepartment;

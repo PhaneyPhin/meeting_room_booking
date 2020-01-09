@@ -8,7 +8,11 @@ class User extends DBHelper_1.default {
         super(...arguments);
         this.getUser = (req, res, next) => tslib_1.__awaiter(this, void 0, void 0, function* () {
             try {
-                const users = yield this.getOfDB(`select * from user_master u inner join role_master r on u.role=r.role_id where flag='1'`, []);
+                const users = yield this.getOfDB(`select u.*,r.*,d.department_id as officer,sd.sub_department_id as department from user_master u 
+                inner join role_master r on u.role=r.role_id
+                left join sub_department_master sd on sd.sub_department_id=u.sub_department_id
+                left join department_master d on d.department_id=sd.department_id
+                where u.flag='1'`, []);
                 res.json({ code: 1, message: 'ok', data: users });
             }
             catch (e) {
@@ -16,9 +20,9 @@ class User extends DBHelper_1.default {
             }
         });
         this.addUser = (req, res, next) => tslib_1.__awaiter(this, void 0, void 0, function* () {
-            var { username, password, first_name, last_name, email, role, img_profile } = req.body;
+            var { username, password, first_name, last_name, email, role, img_profile, department } = req.body;
             try {
-                yield this.execute(`insert into user_master values ($1,SHA1($2),$3,$4,$5,$6,$7,$8,$9,$10)`, [username, password, first_name, last_name, email, moment_1.default().format("YYYY-MM-DD HH:mm:ss"), null, role, '1', img_profile]);
+                yield this.execute(`insert into user_master values ($1,SHA1($2),$3,$4,$5,$6,$7,$8,$9,$10,$11)`, [username, password, first_name, last_name, email, moment_1.default().format("YYYY-MM-DD HH:mm:ss"), null, role, '1', img_profile, department]);
                 return res.json({ code: 1, message: "ok" });
             }
             catch (e) {
@@ -26,9 +30,9 @@ class User extends DBHelper_1.default {
             }
         });
         this.updateUser = (req, res, next) => tslib_1.__awaiter(this, void 0, void 0, function* () {
-            var { username, first_name, last_name, email, role, img_profile } = req.body;
+            var { username, first_name, last_name, email, role, img_profile, department } = req.body;
             try {
-                yield this.execute(`update user_master set first_name=$1,last_name=$2,email=$3,role=$4,img_profile=$6 where username=$5`, [first_name, last_name, email, role, username, img_profile]);
+                yield this.execute(`update user_master set first_name=$1,last_name=$2,email=$3,role=$4,img_profile=$6,sub_department_id=$7 where username=$5`, [first_name, last_name, email, role, username, img_profile, department]);
                 return res.json({ code: 1, message: 'ok' });
             }
             catch (e) {

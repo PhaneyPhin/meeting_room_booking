@@ -39,7 +39,8 @@ class Dashboard extends DBHelper_1.default {
                         from department_master dm Left JOIN
                         (select d.*,sum(m.material_price*bm.number) as total_price from department_master d inner JOIN
                             sub_department_master  sd on d.department_id=sd.department_id
-                            inner JOIN booking_master b on b.sub_department_id=sd.sub_department_id
+                            inner join user_master u on u.sub_department_id=sd.sub_department_id
+                            inner JOIN booking_master b on b.username=u.username
                             inner join booking_material bm on b.booking_id=bm.booking_id
                         inner join material_master m on m.material_id=bm.material_id
                         where (b.status_id='1' or b.status_id='2' or b.status_id='3') ${where}
@@ -66,7 +67,8 @@ class Dashboard extends DBHelper_1.default {
                     select sdm.*,(case when total_price is null then 0 else total_price end) as total_price
                         from sub_department_master sdm Left JOIN
                         (select sd.*,sum(m.material_price*bm.number) as total_price from sub_department_master sd 
-                            inner JOIN booking_master b on b.sub_department_id=sd.sub_department_id
+                            inner join user_master u on u.sub_department_id=sd.sub_department_id
+                            inner JOIN booking_master b on b.username=u.username
                             inner join booking_material bm on b.booking_id=bm.booking_id
                         inner join material_master m on m.material_id=bm.material_id
                         where (b.status_id='1' or b.status_id='2' or b.status_id='3') ${where}

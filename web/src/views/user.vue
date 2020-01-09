@@ -107,6 +107,40 @@
                   </div>
                   <div class="vx-col lg:w-1/2 md:w-1/2 sm:w-1/2 w-full mt-5">
                     <label>
+                      {{ $t("officer") }}
+                      <span class="require">*</span>
+                    </label>
+                    <vs-select class="w-full" v-model="editObj.officer" :danger="invalid.officer">
+                      <vs-select-item
+                        :key="index"
+                        :value="item.department_id"
+                        :text="item['department_name_'+$i18n.locale]"
+                        v-for="(item, index) in officers"
+                      />
+                    </vs-select>
+                    <div class="errors" v-if="invalid.officer">{{ $t("alert_officer") }}</div>
+                  </div>
+                  <div class="vx-col lg:w-1/2 md:w-1/2 sm:w-1/2 w-full mt-5">
+                    <label>
+                      {{ $t("department") }}
+                      <span class="require">*</span>
+                    </label>
+                    <vs-select
+                      class="w-full"
+                      v-model="editObj.department"
+                      :danger="invalid.department"
+                    >
+                      <vs-select-item
+                        :key="index"
+                        :value="item.sub_department_id"
+                        :text="item['sub_department_name_'+$i18n.locale]"
+                        v-for="(item, index) in departments"
+                      />
+                    </vs-select>
+                    <div class="errors" v-if="invalid.department">{{ $t("alert_department") }}</div>
+                  </div>
+                  <div class="vx-col lg:w-1/2 md:w-1/2 sm:w-1/2 w-full mt-5">
+                    <label>
                       {{ $t("password") }}
                       <span class="require">*</span>
                     </label>
@@ -226,6 +260,36 @@
               disabled
             />
             <div class="errors" v-if="invalid.username">{{ $t("alert_username") }}</div>
+          </div>
+          <div class="vx-col w-full mt-5">
+            <label>
+              {{ $t("officer") }}
+              <span class="require">*</span>
+            </label>
+            <vs-select class="w-full" v-model="editObj.officer" :danger="invalid.officer">
+              <vs-select-item
+                :key="index"
+                :value="item.department_id"
+                :text="item['department_name_'+$i18n.locale]"
+                v-for="(item, index) in officers"
+              />
+            </vs-select>
+            <div class="errors" v-if="invalid.officer">{{ $t("alert_officer") }}</div>
+          </div>
+          <div class="vx-col w-full mt-5">
+            <label>
+              {{ $t("department") }}
+              <span class="require">*</span>
+            </label>
+            <vs-select class="w-full" v-model="editObj.department" :danger="invalid.department">
+              <vs-select-item
+                :key="index"
+                :value="item.sub_department_id"
+                :text="item['sub_department_name_'+$i18n.locale]"
+                v-for="(item, index) in departments"
+              />
+            </vs-select>
+            <div class="errors" v-if="invalid.department">{{ $t("alert_department") }}</div>
           </div>
           <div class="vx-col md:w-full mt-3">
             <label>
@@ -390,7 +454,9 @@ export default {
       roles: [],
       submitted: false,
       editObj: {},
-      uploadUrl: service.url + "/upload"
+      uploadUrl: service.url + "/upload",
+      departments: [],
+      officers: []
     };
   },
 
@@ -402,6 +468,8 @@ export default {
         last_name: require("last_name"),
         email: require("email"),
         username: require("username"),
+        officer: require("officer"),
+        department: require("department"),
         password:
           (!this.popupActive || this.change_password) && require("password"),
         confirm_password:
@@ -421,6 +489,8 @@ export default {
         this.invalid.password ||
         this.invalid.confirm_password ||
         this.invalid.role ||
+        this.invalid.officer ||
+        this.invalid.department ||
         this.old_password
       );
     },
@@ -471,6 +541,8 @@ export default {
         username: "",
         password: "",
         confirm_password: "",
+        officer: "",
+        department: "",
         role: ""
       };
     },
@@ -531,7 +603,7 @@ export default {
         }
       });
     },
-    getdata() {
+    async getdata() {
       service.postData("/get_user", {}).then(result => {
         this.users = result.data.map(item => {
           item.password = "";
@@ -545,6 +617,15 @@ export default {
         },
         err => {}
       );
+      try {
+        var officerResponse = await service.postData(
+          "department/getDepartment",
+          {}
+        );
+        this.officers = officerResponse.data;
+      } catch (e) {
+        console.log(e);
+      }
     },
     forceRerender() {
       this.renderComponent = false;
@@ -560,15 +641,23 @@ export default {
       } else {
       }
       if (!this.isInvald) {
-        service
-          .postData("/add_user", { ...this.editObj, img_profile })
-          .then(result => {
+        service.postData("/add_user", { ...this.editObj, img_profile }).then(
+          result => {
             this.$swal(this.$t("success_title"), "", "success").then(result => {
               this.getdata();
               this.forceRerender();
               this.initVal();
             });
-          });
+          },
+          err => {
+            console.log(err);
+            this.$swal("", err.message, "error").then(result => {
+              this.getdata();
+              this.forceRerender();
+              this.initVal();
+            });
+          }
+        );
       }
     }
   },
@@ -576,6 +665,18 @@ export default {
     popupActive(val) {
       if (!val) {
         this.initVal();
+      }
+    },
+    async "editObj.officer"(val) {
+      console.log(val);
+      try {
+        var departmentResponse = await service.postData(
+          "/subDepartment/getSubDepartmentByDepartmentID",
+          { department_id: val }
+        );
+        this.departments = departmentResponse.data;
+      } catch (e) {
+        console.log(e);
       }
     }
   }
