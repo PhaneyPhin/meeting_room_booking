@@ -84,6 +84,48 @@ class User extends DBHelper_1.default {
                 return res.json(e);
             }
         });
+        this.getUserInformation = (req, res, next) => tslib_1.__awaiter(this, void 0, void 0, function* () {
+            const { username } = req.body;
+            try {
+                var users = yield this.getOfDB(`SELECT first_name,last_name,email,img_profile FROM user_master where username=$1`, [username]);
+                if (users.length > 0) {
+                    return res.json({ code: 1, message: "ok", user: users[0] });
+                }
+                else {
+                    return res.json({ code: -1, message: "invalid user" });
+                }
+            }
+            catch (e) {
+                return res.json(e);
+            }
+        });
+        this.saveUserInformation = (req, res, next) => tslib_1.__awaiter(this, void 0, void 0, function* () {
+            const { username, first_name, last_name, email, img_profile } = req.body;
+            try {
+                yield this.execute(`update user_master set first_name=$1,last_name=$2,email=$3 where username=$4`, [first_name, last_name, email, username]);
+                return res.json({ code: 1, message: "ok" });
+            }
+            catch (e) {
+                return res.json(e);
+            }
+        });
+        this.updateOwnPassword = (req, res, next) => tslib_1.__awaiter(this, void 0, void 0, function* () {
+            const { new_password, password, username } = req.body;
+            console.log({ new_password, password, username });
+            try {
+                const uesrs = yield this.getOfDB(`select * from user_master where username=$1 and password=SHA1($2)`, [username, password]);
+                if (uesrs.length > 0) {
+                    yield this.execute(`update user_master set password=SHA1($1) where username=$2 and password=SHA1($3)`, [new_password, username, password]);
+                    return res.json({ code: 1, message: "ok" });
+                }
+                else {
+                    return res.json({ code: -1, message: "invalid old password" });
+                }
+            }
+            catch (e) {
+                return res.json(e);
+            }
+        });
     }
 }
 exports.default = User;

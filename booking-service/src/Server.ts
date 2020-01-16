@@ -13,16 +13,20 @@ import bodyParser from 'body-parser';
 // import middleware from "./middleware";
 // Init express
 const app = express();
+app.use(bodyParser.json({
+    limit: '50mb'
+}));
 
+app.use(bodyParser.urlencoded({
+    limit: '50mb',
+    parameterLimit: 100000,
+    extended: true
+}));
 // Add middleware/settings/routes to express.
 app.use(logger('dev'));
 app.use(express.json());
 app.use(cors());
-app.use(bodyParser.json({ limit: '100mb' }));
-app.use(bodyParser.urlencoded({
-    extended: true,
-    limit: '100mb'
-}));
+
 app.use(cookieParser());
 
 app.use(express.static(path.join(__dirname, 'public')));
@@ -36,28 +40,12 @@ app.use('/api', BaseRouter);
  * configure this to only serve the index file while in
  * production mode.
  */
-const viewsDir = path.join(__dirname, 'views');
+const viewsDir = path.join(__dirname, 'public');
 app.set('views', viewsDir);
 app.set('view engine', 'ejs');
 const staticDir = path.join(__dirname, 'public');
 app.use(express.static(staticDir));
-app.get("/email", (req: Request, res: Response) => {
-    var data = {
-        username: "Phaney Phin",
-        message_en: "Your booking was approved",
-        booking_id: "B0001",
-        room_name: "203",
-        floor: "2",
-        building: "อาคาร A",
-        address_en: "อาคาร A รามคำแหง",
-        address_th: "อาคาร A รามคำแหง",
-        subject: "ประชุม",
-        date: "26/06/2019",
-        time: "17:00:00-17:30:00"
-    }
 
-    res.render('email', { data })
-})
 app.get('*', (req: Request, res: Response) => {
     res.sendFile('index.html', { root: viewsDir });
 });

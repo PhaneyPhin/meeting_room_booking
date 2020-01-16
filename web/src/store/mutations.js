@@ -38,6 +38,9 @@ const mutations = {
   UPDATE_PRIMARY_COLOR(state, val) {
     state.themePrimaryColor = val;
   },
+  PUSH_TEST(state, val) {
+    state.push(val);
+  },
   UPDATE_USER_ROLE(state, val) {
     state.userRole = val
     localStorage.setItem('userRole', val)
@@ -51,6 +54,10 @@ const mutations = {
   SETPROFILE(state, val) {
     state.img_profile = val;
     localStorage.setItem('img_profile', val);
+  },
+  SET_DISPLAY_USERNAME(state, val) {
+    state.display_username = val;
+    localStorage.setItem('dispalyUser', val);
   },
 
   // ////////////////////////////////////////////

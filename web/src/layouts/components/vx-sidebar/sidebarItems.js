@@ -155,5 +155,25 @@ export default [
     icon: "ApertureIcon",
     slug: "dashboardECommerce",
     i18n: "My Booking History",
-  }
+  },
+  {
+    header: "your information",
+    i18n: "setting",
+    cansee: "approver"
+  },
+  {
+    url: '/ChangeUserInformation',
+    name: "eCommerce",
+    icon: "UserIcon",
+    slug: "dashboardECommerce",
+    i18n: "Edit Your Information",
+  },
+  {
+    url: '/updatePassword',
+    name: "eCommerce",
+    icon: "KeyIcon",
+    slug: "dashboardECommerce",
+    i18n: "Edit Your Password",
+  },
+
 ]

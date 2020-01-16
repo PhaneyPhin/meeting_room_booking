@@ -161,6 +161,7 @@
                     <vs-input
                       v-model="editObj.confirm_password"
                       class="w-full"
+                      type="password"
                       :danger="invalid.confirm_password"
                     />
                     <div

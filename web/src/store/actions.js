@@ -35,6 +35,12 @@ const actions = {
   setProfile({ commit }, val) {
     commit('SETPROFILE', val);
   },
+  setDisplayUsername({ commit }, val) {
+    commit('SET_DISPLAY_USERNAME', val);
+  },
+  pushTest({ commit }, val) {
+    commit('PUSH_TEST', val);
+  },
 
   // ////////////////////////////////////////////
   // COMPONENT

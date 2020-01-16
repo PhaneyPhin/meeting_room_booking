@@ -11,11 +11,7 @@
 <template>
   <div class="relative">
     <div class="vx-navbar-wrapper">
-      <vs-navbar
-        class="vx-navbar navbar-custom"
-        :color="navbarColor"
-        :class="classObj"
-      >
+      <vs-navbar class="vx-navbar navbar-custom" :color="navbarColor" :class="classObj">
         <!-- SM - OPEN SIDEBAR BUTTON -->
         <feather-icon
           class="sm:inline-flex xl:hidden cursor-pointer mr-1"
@@ -27,32 +23,27 @@
 
         <!-- I18N -->
         <vs-dropdown vs-custom-content vs-trigger-click class="cursor-pointer">
-          <span class="cursor-pointer flex i18n-locale"
-            ><img
+          <span class="cursor-pointer flex i18n-locale">
+            <img
               class="h-4 w-5"
               :src="require(`@/assets/images/flags/${$i18n.locale}.png`)"
               :alt="$i18n.locale"
-            /><span class="hidden sm:block ml-2">{{
+            />
+            <span class="hidden sm:block ml-2">
+              {{
               getCurrentLocaleData.lang
-            }}</span></span
-          >
+              }}
+            </span>
+          </span>
           <vs-dropdown-menu class="w-48 i18n-dropdown vx-navbar-dropdown">
-            <vs-dropdown-item @click="updateLocale('en')"
-              ><img
-                class="h-4 w-5 mr-1"
-                src="@/assets/images/flags/en.png"
-                alt="en"
-              />
-              &nbsp;English</vs-dropdown-item
-            >
-            <vs-dropdown-item @click="updateLocale('th')"
-              ><img
-                class="h-4 w-5 mr-1"
-                src="@/assets/images/flags/th.png"
-                alt="th"
-              />
-              &nbsp;Thailand</vs-dropdown-item
-            >
+            <vs-dropdown-item @click="updateLocale('en')">
+              <img class="h-4 w-5 mr-1" src="@/assets/images/flags/en.png" alt="en" />
+              &nbsp;English
+            </vs-dropdown-item>
+            <vs-dropdown-item @click="updateLocale('th')">
+              <img class="h-4 w-5 mr-1" src="@/assets/images/flags/th.png" alt="th" />
+              &nbsp;Thailand
+            </vs-dropdown-item>
           </vs-dropdown-menu>
         </vs-dropdown>
 
@@ -73,7 +64,7 @@
                     <feather-icon icon="XIcon" class="px-4 cursor-pointer h-full close-search-icon" @click="showFullSearch = false"></feather-icon>
                 </div>
             </div>
-            <feather-icon icon="SearchIcon" @click="showFullSearch = true" class="cursor-pointer navbar-fuzzy-search ml-4"></feather-icon> -->
+        <feather-icon icon="SearchIcon" @click="showFullSearch = true" class="cursor-pointer navbar-fuzzy-search ml-4"></feather-icon>-->
 
         <!-- CART DROPDOWN -->
 
@@ -83,14 +74,10 @@
         &nbsp;&nbsp;&nbsp;
         <div class="the-navbar__user-meta flex items-center">
           <div class="text-right leading-tight hidden sm:block">
-            <p class="font-semibold">{{ user_displayName }}</p>
+            <p class="font-semibold">{{ $store.state.display_username }}</p>
             <small>Available</small>
           </div>
-          <vs-dropdown
-            vs-custom-content
-            vs-trigger-click
-            class="cursor-pointer"
-          >
+          <vs-dropdown vs-custom-content vs-trigger-click class="cursor-pointer">
             <div class="con-img ml-3">
               <img
                 key="localImg"

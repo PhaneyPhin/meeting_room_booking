@@ -23,7 +23,7 @@ export default new AclCreate({
     approver: new AclRule('approver').or('admin').generate(),
     member: new AclRule('approver').or('admin').or('member').generate(),
     public: new AclRule('public').or('approver').or('admin').or('member').generate(),
-    notAdmin: new AclRule('member').or('approver').generate()
+    notAdmin: new AclRule('approver').generate()
     // public: new AclRule('public').or('admin').or('editor').generate(),
   }
 })

@@ -207,6 +207,22 @@ const router = new Router({
             rule: "admin"
           }
         },
+        {
+          path: '/changeUserInformation',
+          name: 'room',
+          component: () => import('./views/ChangeUserInformation.vue'),
+          meta: {
+            rule: 'member'
+          }
+        },
+        {
+          path: '/updatePassword',
+          name: 'room',
+          component: () => import('./views/UpdatePassword.vue'),
+          meta: {
+            rule: 'member'
+          }
+        },
         // =============================================================================
         // Application Routes
         // =============================================================================

@@ -12,6 +12,8 @@ import themeConfig from '@/../themeConfig.js'
 import colors from '@/../themeConfig.js'
 
 const state = {
+  test: [],
+  display_username: "",
   img_profile: '',
   isSidebarActive: true,
   breakpoint: null,

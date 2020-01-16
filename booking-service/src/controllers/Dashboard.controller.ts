@@ -38,12 +38,12 @@ export default class Dashboard extends Connection {
             var summaryCosts = await this.getOfDB(`
                     select dm.*,(case when total_price is null then 0 else total_price end) as total_price
                         from department_master dm Left JOIN
-                        (select d.*,sum(m.material_price*bm.number) as total_price from department_master d inner JOIN
+                        (select d.*,sum(m.material_price*bm.number) as total_price from department_master d INNER JOIN
                             sub_department_master  sd on d.department_id=sd.department_id
-                            inner join user_master u on u.sub_department_id=sd.sub_department_id
-                            inner JOIN booking_master b on b.username=u.username
-                            inner join booking_material bm on b.booking_id=bm.booking_id
-                        inner join material_master m on m.material_id=bm.material_id
+                            INNER JOIN user_master u on u.sub_department_id=sd.sub_department_id
+                            INNER JOIN booking_master b on b.username=u.username
+                            INNER JOIN booking_material bm on b.booking_id=bm.booking_id
+                        INNER JOIN material_master m on m.material_id=bm.material_id
                         where (b.status_id='1' or b.status_id='2' or b.status_id='3') ${where}
                         group BY d.department_id) s
                         on s.department_id=dm.department_id
@@ -67,16 +67,96 @@ export default class Dashboard extends Connection {
                     select sdm.*,(case when total_price is null then 0 else total_price end) as total_price
                         from sub_department_master sdm Left JOIN
                         (select sd.*,sum(m.material_price*bm.number) as total_price from sub_department_master sd 
-                            inner join user_master u on u.sub_department_id=sd.sub_department_id
-                            inner JOIN booking_master b on b.username=u.username
-                            inner join booking_material bm on b.booking_id=bm.booking_id
-                        inner join material_master m on m.material_id=bm.material_id
+                            INNER JOIN user_master u on u.sub_department_id=sd.sub_department_id
+                            INNER JOIN booking_master b on b.username=u.username
+                            INNER JOIN booking_material bm on b.booking_id=bm.booking_id
+                        INNER JOIN material_master m on m.material_id=bm.material_id
                         where (b.status_id='1' or b.status_id='2' or b.status_id='3') ${where}
                         group BY sd.sub_department_id) s
                         on s.sub_department_id=sdm.sub_department_id where sdm.department_id=$1
 
                 `, [department_id, ...arr]);
             return res.json({ code: 1, message: 'ok', data: summaryCosts })
+        } catch (e) {
+            return res.json(e);
+        }
+    }
+    public getMaterialOfficerUsing = async (req: Request, res: Response, next: NextFunction) => {
+        const { start_date, end_date, departmentView, department_id, sub_departmentView, sub_department_id, } = req.body;
+        console.log(req.body);
+
+        try {
+            var arr: any = [];
+            var where = "";
+            var i = 0;
+            if (start_date != "" && end_date != "") {
+                arr = [start_date + " 00:00:00", end_date + " 23:59:59"];
+                where = `and (b.start_date>=$${i + 1} and b.start_date<=$${i + 2}) `;
+                i = i + 2;
+            }
+            if (departmentView == 1) {
+                arr = [...arr, department_id]
+                where += `and (department_id=$${i + 1})`;
+                i++;
+            }
+            if (sub_departmentView == 1) {
+                arr = [...arr, sub_department_id]
+                where += `and (dm.sub_department_id=$${i + 1})`;
+                i++;
+            }
+            console.log(arr)
+
+
+            const sql = `SELECT m.material_id,material_name,material_price,sum(bm.number) as material_number,sum(bm.number*m.material_price) as total_price from material_master m 
+                INNER JOIN booking_material bm on bm.material_id=m.material_id
+                INNER JOIN booking_master b on b.booking_id=bm.booking_id
+                INNER JOIN user_master u on u.username=b.username
+                INNER JOIN sub_department_master dm on dm.sub_department_id=u.sub_department_id
+                where '1'='1' ${where}
+                GROUP BY m.material_id ORDER BY m.material_id
+            `;
+            console.log(sql)
+            var materials: any = await this.getOfDB(sql, arr);
+            return res.json({ code: 1, message: "ok", data: materials })
+        } catch (e) {
+            return res.json(e);
+        }
+    }
+    public getBookingOfficerDetail = async (req: Request, res: Response) => {
+        var { start_date, end_date, material_id, departmentView, department_id, sub_departmentView, sub_department_id } = req.body;
+        try {
+            var arr: any = [];
+            var where = "";
+            var i = 2;
+            if (start_date != "" && end_date != "") {
+                arr = [start_date + " 00:00:00", end_date + " 23:59:59"];
+                where = ` and (b.start_date>=$${i} and b.start_date<=$${i + 1})`;
+                i = i + 2;
+            }
+            if (departmentView == 1) {
+                arr = [...arr, department_id]
+                where += `and d.department_id=$${i}`;
+                i++;
+            }
+
+            if (sub_departmentView == 1) {
+                arr = [...arr, sub_department_id]
+                where += `and sd.sub_department_id=$${i}`;
+                i++;
+            }
+
+
+            var books = await this.getOfDB(`select * from booking_master b 
+                inner join user_master u on u.username=b.username
+                left join sub_department_master sd 
+                on u.sub_department_id=sd.sub_department_id
+                left join department_master d on sd.department_id=d.department_id
+                inner join room_master r on r.room_id=b.room_id
+                inner join booking_status bs on bs.status_id=b.status_id
+                inner join booking_material bm on bm.booking_id=b.booking_id
+            where b.flag='1' and bm.material_id=$1 ${where} order by b.start_date`, [material_id, ...arr]);
+
+            return res.json({ code: 1, message: 'ok', data: books });
         } catch (e) {
             return res.json(e);
         }

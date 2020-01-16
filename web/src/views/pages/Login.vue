@@ -100,11 +100,16 @@ export default {
         });
         service.setToken(result.token);
 
-        var { role_name } = service.getUser().user;
+        var { role_name, first_name, last_name } = service.getUser().user;
         this.$store.dispatch("updateUserRole", role_name);
         this.$acl.change(role_name);
         this.$store.dispatch("setProfile", result.img_profile);
+        this.$store.dispatch(
+          "setDisplayUsername",
+          first_name + " " + last_name
+        );
         this.$router.push("/home");
+
         this.$vs.loading.close("#button-with-loading > .con-vs-loading");
       } catch (e) {
         await this.$swal(this.$t("Login failed"), this.$t(e.message), "error");

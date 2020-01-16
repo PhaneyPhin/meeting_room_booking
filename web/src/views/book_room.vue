@@ -129,21 +129,7 @@
           </div>
         </div>
         <div class="mt-6 vx-row lg:ml-10 lg:mr-10">
-          <div class="vx-col w-1/3 mt-5">{{$t("username")}}</div>
-          <div
-            class="vx-col w-2/3 text-primary mt-5"
-          >{{booking_data.first_name+' '+booking_data.last_name}}</div>
           <div class="vx-col lg:w-1/2 w-full">
-            <div class="vx-row">
-              <div class="vx-col w-1/3">{{$t("username")}}</div>
-              <div
-                class="vx-col w-2/3 text-primary"
-              >{{booking_data.first_name+' '+booking_data.last_name}}</div>
-            </div>
-            <div class="vx-row mt-5">
-              <div class="vx-col w-1/3">{{$t("start_date")}}</div>
-              <div class="vx-col w-2/3 text-primary">{{booking_data.start_date}}</div>
-            </div>
             <table style="width:100%">
               <tr>
                 <td style="padding:5px">{{$t("username")}}</td>
@@ -440,6 +426,13 @@ export default {
         start_time: moment().format("HH:mm:ss"),
         end_time: "17:30:00"
       };
+      this.booking = false;
+      this.detail = "";
+      this.buildings = [];
+      this.important = "";
+      this.remark = "";
+      this.tel = "";
+      this.member = "";
     },
     search() {
       this.searched = true;
@@ -560,6 +553,7 @@ export default {
                       this.detail = "";
                       this.important = "";
                       this.submitted = false;
+                      this.initVal();
                     },
                     err => {
                       // this.$vs.loading.close("#button-with-loading > .con-vs-loading")

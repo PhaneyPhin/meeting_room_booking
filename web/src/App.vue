@@ -30,6 +30,12 @@ export default {
         : "";
     console.log("img_profile", img_profile);
     this.$store.dispatch("setProfile", img_profile);
+    var dispalyUser =
+      localStorage.getItem("dispalyUser") != undefined
+        ? localStorage.getItem("dispalyUser")
+        : "";
+    console.log("dispalyUser", dispalyUser);
+    this.$store.dispatch("setDisplayUsername", dispalyUser);
     if (user != "") {
       if (user.role_name) {
         var { role_name } = service.getUser().user;
